@@ -19,7 +19,7 @@ export default function Home() {
         <HeroSection />
 
 {/* How it works section */}
-<section className="bg-white pt-6 md:pt-12 pb-16 md:pb-24 px-4 md:px-6 mb-8 md:mb-0">
+<section className="bg-white pt-10 md:pt-12 pb-16 md:pb-24 px-4 md:px-6 mb-8 md:mb-0">
   <div className="container mx-auto">
     <AnimatedSection animation="fade-up">
       <div className="text-center mb-12">
@@ -32,10 +32,7 @@ export default function Home() {
 
     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
       <AnimatedSection animation="fade-up" delay={100}>
-        <div
-          className="bg-[#E0E0E0] rounded-xl p-6 text-center bg-cover bg-center h-64"
-          style={{ backgroundImage: "url('/path-to-image-1.jpg')" }}
-        >
+        <div className="bg-[#E0E0E0] rounded-xl p-6 text-center">
           <div className="bg-[#00A6A6] h-12 w-12 rounded-full flex items-center justify-center mx-auto mb-4">
             <span className="text-white font-bold">1</span>
           </div>
@@ -45,10 +42,7 @@ export default function Home() {
       </AnimatedSection>
 
       <AnimatedSection animation="fade-up" delay={200}>
-        <div
-          className="bg-[#E0E0E0] rounded-xl p-6 text-center bg-cover bg-center h-64"
-          style={{ backgroundImage: "url('/path-to-image-2.jpg')" }}
-        >
+        <div className="bg-[#E0E0E0] rounded-xl p-6 text-center">
           <div className="bg-[#00A6A6] h-12 w-12 rounded-full flex items-center justify-center mx-auto mb-4">
             <span className="text-white font-bold">2</span>
           </div>
@@ -58,10 +52,7 @@ export default function Home() {
       </AnimatedSection>
 
       <AnimatedSection animation="fade-up" delay={300}>
-        <div
-          className="bg-[#E0E0E0] rounded-xl p-6 text-center bg-cover bg-center h-64"
-          style={{ backgroundImage: "url('/path-to-image-3.jpg')" }}
-        >
+        <div className="bg-[#E0E0E0] rounded-xl p-6 text-center">
           <div className="bg-[#00A6A6] h-12 w-12 rounded-full flex items-center justify-center mx-auto mb-4">
             <span className="text-white font-bold">3</span>
           </div>
@@ -72,7 +63,6 @@ export default function Home() {
     </div>
   </div>
 </section>
-
 
 
 

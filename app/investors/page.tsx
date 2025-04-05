@@ -13,7 +13,7 @@ export default function InvestorsPage() {
       <Header />
       <main className="flex-1">
         {/* Hero section */}
-        <section className="py-16 md:py-24 bg-[#E0E0E0]">
+        <section className="pt-14 pb-20 md:pt-16 md:pb-24 bg-[#E0E0E0]">
           <div className="container mx-auto px-4 md:px-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div className="space-y-6">
@@ -40,11 +40,11 @@ export default function InvestorsPage() {
         </section>
 
         {/* Why invest section */}
-        <section className="py-16 px-4 md:px-6">
+        <section className="pt-14 pb-20 px-4 md:pt-16 md:pb-24">
           <div className="container mx-auto">
             <AnimatedSection animation="fade-up">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-[#333333] mb-4">Why Invest in Revit</h2>
+              <div className="text-center mb-10">
+                <h2 className="text-3xl font-bold text-[#333333] mb-3">Why Invest in Revit</h2>
                 <p className="text-lg text-[#666666] max-w-2xl mx-auto">
                   Revit represents a compelling investment opportunity in the growing service marketplace sector
                 </p>
@@ -53,8 +53,8 @@ export default function InvestorsPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <AnimatedSection animation="fade-up" delay={100}>
-                <div className="bg-[#E0E0E0] rounded-xl p-6">
-                  <div className="bg-[#00A6A6]/10 h-16 w-16 rounded-full flex items-center justify-center mb-4">
+                <div className="bg-[#E0E0E0] rounded-xl p-6 mb-4">
+                  <div className="bg-[#00A6A6]/10 h-16 w-16 rounded-full flex items-center justify-center mb-3">
                     <TrendingUp className="h-8 w-8 text-[#00A6A6]" />
                   </div>
                   <h3 className="text-xl font-bold text-[#333333] mb-2">Rapid Growth</h3>
@@ -65,8 +65,8 @@ export default function InvestorsPage() {
               </AnimatedSection>
 
               <AnimatedSection animation="fade-up" delay={200}>
-                <div className="bg-[#E0E0E0] rounded-xl p-6">
-                  <div className="bg-[#00A6A6]/10 h-16 w-16 rounded-full flex items-center justify-center mb-4">
+                <div className="bg-[#E0E0E0] rounded-xl p-6 mb-4">
+                  <div className="bg-[#00A6A6]/10 h-16 w-16 rounded-full flex items-center justify-center mb-3">
                     <Globe className="h-8 w-8 text-[#00A6A6]" />
                   </div>
                   <h3 className="text-xl font-bold text-[#333333] mb-2">Massive Market</h3>
@@ -78,8 +78,8 @@ export default function InvestorsPage() {
               </AnimatedSection>
 
               <AnimatedSection animation="fade-up" delay={300}>
-                <div className="bg-[#E0E0E0] rounded-xl p-6">
-                  <div className="bg-[#00A6A6]/10 h-16 w-16 rounded-full flex items-center justify-center mb-4">
+                <div className="bg-[#E0E0E0] rounded-xl p-6 mb-4">
+                  <div className="bg-[#00A6A6]/10 h-16 w-16 rounded-full flex items-center justify-center mb-3">
                     <Award className="h-8 w-8 text-[#00A6A6]" />
                   </div>
                   <h3 className="text-xl font-bold text-[#333333] mb-2">Proven Model</h3>
@@ -93,11 +93,11 @@ export default function InvestorsPage() {
         </section>
 
         {/* Market opportunity section */}
-        <section className="py-16 px-4 md:px-6 bg-[#E0E0E0]" id="investment-opportunities">
+        <section className="pt-14 pb-20 px-4 md:pt-16 md:pb-24 bg-[#E0E0E0]" id="investment-opportunities">
           <div className="container mx-auto">
             <AnimatedSection animation="fade-up">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-[#333333] mb-4">Market Opportunity</h2>
+              <div className="text-center mb-10">
+                <h2 className="text-3xl font-bold text-[#333333] mb-3">Market Opportunity</h2>
                 <p className="text-lg text-[#666666] max-w-2xl mx-auto">
                   The skilled service marketplace represents a massive opportunity for digital disruption
                 </p>
@@ -106,7 +106,7 @@ export default function InvestorsPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
               <AnimatedSection animation="slide-in-left">
-                <div className="relative h-[400px] rounded-xl overflow-hidden">
+                <div className="relative h-[400px] rounded-xl overflow-hidden mb-4">
                   <Image
                     src="/placeholder.svg?height=400&width=600"
                     alt="Market growth chart"
@@ -117,13 +117,13 @@ export default function InvestorsPage() {
               </AnimatedSection>
 
               <AnimatedSection animation="slide-in-right">
-                <div className="space-y-6">
+                <div className="space-y-5">
                   <h3 className="text-2xl font-bold text-[#333333]">A Growing Industry</h3>
                   <p className="text-[#666666]">
                     The skilled trades industry is experiencing significant growth, driven by:
                   </p>
                   <ul className="space-y-4">
-                    <li className="flex items-start gap-3">
+                    <li className="flex items-start gap-3 mb-3">
                       <BarChart className="h-6 w-6 text-[#00A6A6] mt-1 flex-shrink-0" />
                       <div>
                         <h4 className="font-bold text-[#333333]">Aging Infrastructure</h4>
@@ -133,7 +133,7 @@ export default function InvestorsPage() {
                         </p>
                       </div>
                     </li>
-                    <li className="flex items-start gap-3">
+                    <li className="flex items-start gap-3 mb-3">
                       <Users className="h-6 w-6 text-[#00A6A6] mt-1 flex-shrink-0" />
                       <div>
                         <h4 className="font-bold text-[#333333]">Labor Shortage</h4>
@@ -143,7 +143,7 @@ export default function InvestorsPage() {
                         </p>
                       </div>
                     </li>
-                    <li className="flex items-start gap-3">
+                    <li className="flex items-start gap-3 mb-3">
                       <DollarSign className="h-6 w-6 text-[#00A6A6] mt-1 flex-shrink-0" />
                       <div>
                         <h4 className="font-bold text-[#333333]">Digital Transformation</h4>
@@ -161,11 +161,11 @@ export default function InvestorsPage() {
         </section>
 
         {/* Business model section */}
-        <section className="py-16 px-4 md:px-6">
+        <section className="pt-14 pb-20 px-4 md:pt-16 md:pb-24">
           <div className="container mx-auto">
             <AnimatedSection animation="fade-up">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-[#333333] mb-4">Our Business Model</h2>
+              <div className="text-center mb-10">
+                <h2 className="text-3xl font-bold text-[#333333] mb-3">Our Business Model</h2>
                 <p className="text-lg text-[#666666] max-w-2xl mx-auto">
                   Revit has developed a sustainable business model with multiple revenue streams
                 </p>
@@ -174,10 +174,10 @@ export default function InvestorsPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
               <AnimatedSection animation="slide-in-right" className="order-2 md:order-1">
-                <div className="space-y-6">
+                <div className="space-y-5">
                   <h3 className="text-2xl font-bold text-[#333333]">Revenue Streams</h3>
                   <ul className="space-y-4">
-                    <li className="flex items-start gap-3">
+                    <li className="flex items-start gap-3 mb-3">
                       <DollarSign className="h-6 w-6 text-[#00A6A6] mt-1 flex-shrink-0" />
                       <div>
                         <h4 className="font-bold text-[#333333]">Service Fees</h4>
@@ -187,7 +187,7 @@ export default function InvestorsPage() {
                         </p>
                       </div>
                     </li>
-                    <li className="flex items-start gap-3">
+                    <li className="flex items-start gap-3 mb-3">
                       <DollarSign className="h-6 w-6 text-[#00A6A6] mt-1 flex-shrink-0" />
                       <div>
                         <h4 className="font-bold text-[#333333]">Premium Subscriptions</h4>
@@ -197,7 +197,7 @@ export default function InvestorsPage() {
                         </p>
                       </div>
                     </li>
-                    <li className="flex items-start gap-3">
+                    <li className="flex items-start gap-3 mb-3">
                       <DollarSign className="h-6 w-6 text-[#00A6A6] mt-1 flex-shrink-0" />
                       <div>
                         <h4 className="font-bold text-[#333333]">Financing & Insurance</h4>
@@ -212,7 +212,7 @@ export default function InvestorsPage() {
               </AnimatedSection>
 
               <AnimatedSection animation="slide-in-left" className="order-1 md:order-2">
-                <div className="relative h-[400px] rounded-xl overflow-hidden">
+                <div className="relative h-[400px] rounded-xl overflow-hidden mb-4">
                   <Image
                     src="/placeholder.svg?height=400&width=600"
                     alt="Business model diagram"
@@ -226,11 +226,11 @@ export default function InvestorsPage() {
         </section>
 
         {/* Traction section */}
-        <section className="py-16 px-4 md:px-6 bg-[#E0E0E0]">
+        <section className="pt-14 pb-20 px-4 md:pt-16 md:pb-24 bg-[#E0E0E0]">
           <div className="container mx-auto">
             <AnimatedSection animation="fade-up">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-[#333333] mb-4">Our Traction</h2>
+              <div className="text-center mb-10">
+                <h2 className="text-3xl font-bold text-[#333333] mb-3">Our Traction</h2>
                 <p className="text-lg text-[#666666] max-w-2xl mx-auto">
                   Revit has demonstrated strong growth and market validation
                 </p>
@@ -239,28 +239,28 @@ export default function InvestorsPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
               <AnimatedSection animation="fade-up" delay={100}>
-                <div className="bg-white rounded-xl p-6 text-center">
+                <div className="bg-white rounded-xl p-6 text-center mb-4">
                   <h3 className="text-4xl font-bold text-[#00A6A6] mb-2">50K+</h3>
                   <p className="text-[#666666]">Registered Professionals</p>
                 </div>
               </AnimatedSection>
 
               <AnimatedSection animation="fade-up" delay={200}>
-                <div className="bg-white rounded-xl p-6 text-center">
+                <div className="bg-white rounded-xl p-6 text-center mb-4">
                   <h3 className="text-4xl font-bold text-[#00A6A6] mb-2">100K+</h3>
                   <p className="text-[#666666]">Active Clients</p>
                 </div>
               </AnimatedSection>
 
               <AnimatedSection animation="fade-up" delay={300}>
-                <div className="bg-white rounded-xl p-6 text-center">
+                <div className="bg-white rounded-xl p-6 text-center mb-4">
                   <h3 className="text-4xl font-bold text-[#00A6A6] mb-2">$25M+</h3>
                   <p className="text-[#666666]">Jobs Completed</p>
                 </div>
               </AnimatedSection>
 
               <AnimatedSection animation="fade-up" delay={400}>
-                <div className="bg-white rounded-xl p-6 text-center">
+                <div className="bg-white rounded-xl p-6 text-center mb-4">
                   <h3 className="text-4xl font-bold text-[#00A6A6] mb-2">4.8/5</h3>
                   <p className="text-[#666666]">Average Rating</p>
                 </div>
@@ -270,11 +270,11 @@ export default function InvestorsPage() {
         </section>
 
         {/* Team section */}
-        <section className="py-16 px-4 md:px-6">
+        <section className="pt-14 pb-16 px-4 md:pt-16 md:pb-20">
           <div className="container mx-auto">
             <AnimatedSection animation="fade-up">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-[#333333] mb-4">Leadership Team</h2>
+              <div className="text-center mb-10">
+                <h2 className="text-3xl font-bold text-[#333333] mb-3">Leadership Team</h2>
                 <p className="text-lg text-[#666666] max-w-2xl mx-auto">
                   Meet the experienced team behind Revit's success
                 </p>
@@ -284,7 +284,7 @@ export default function InvestorsPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
               {[1, 2, 3].map((i) => (
                 <AnimatedSection key={i} animation="fade-up" delay={i * 100}>
-                  <div className="bg-[#E0E0E0] rounded-xl p-6">
+                  <div className="bg-[#E0E0E0] rounded-xl p-6 mb-4">
                     <div className="relative h-64 w-64 mx-auto mb-4 rounded-xl overflow-hidden">
                       <Image
                         src={`/placeholder.svg?height=300&width=300&text=Executive+${i}`}
@@ -294,7 +294,7 @@ export default function InvestorsPage() {
                       />
                     </div>
                     <h3 className="text-xl font-bold text-[#333333] text-center">John Doe</h3>
-                    <p className="text-[#666666] text-center mb-4">CEO & Co-Founder</p>
+                    <p className="text-[#666666] text-center mb-3">CEO & Co-Founder</p>
                     <p className="text-[#666666]">
                       Former executive at [Major Company] with 15+ years of experience in marketplace businesses and
                       skilled trades.
@@ -307,9 +307,9 @@ export default function InvestorsPage() {
         </section>
 
         {/* Investment opportunities section */}
-        <section className="py-16 px-4 md:px-6 bg-[#00A6A6]">
+        <section className="pt-12 pb-16 px-4 md:pt-14 md:pb-20 bg-[#00A6A6]">
           <div className="container mx-auto text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl mb-4">Investment Opportunities</h2>
+            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl mb-3">Investment Opportunities</h2>
             <p className="text-lg text-white max-w-2xl mx-auto mb-8">
               We're currently raising our Series B round to accelerate growth and expand into new markets
             </p>
@@ -323,4 +323,3 @@ export default function InvestorsPage() {
     </div>
   )
 }
-

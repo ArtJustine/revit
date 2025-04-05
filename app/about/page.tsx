@@ -18,8 +18,7 @@ export default function AboutPage() {
               <div className="space-y-6">
                 <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-[#333333]">About Revit</h1>
                 <p className="text-lg text-[#666666] max-w-md">
-                  We're on a mission to transform how people find and hire skilled professionals for any job, big or
-                  small.
+                Hi, I’m Art, the founder and developer of Revit — a platform born out of personal frustration and a desire to make life easier for both skilled professionals and the people who need their services.
                 </p>
               </div>
               <div className="relative h-[300px] rounded-xl overflow-hidden">
@@ -36,19 +35,13 @@ export default function AboutPage() {
               <h2 className="text-3xl font-bold text-[#333333] mb-6">Our Story</h2>
               <div className="space-y-4 text-[#666666]">
                 <p>
-                  Revit was founded in 2023 with a simple idea: make it easier for people to find reliable skilled
-                  professionals for their everyday needs. Our founders experienced firsthand the frustration of trying
-                  to find trustworthy mechanics, plumbers, and electricians when they needed them most.
+                Back in 2023, I hit a wall. I needed help — a reliable plumber one week, an electrician the next — and every time, the process felt like a gamble. Endless searching, sketchy listings, no guarantees. I realized I wasn’t alone. Friends and family had the same experience: finding trustworthy skilled help was harder than it should be.
                 </p>
                 <p>
-                  What started as a small local network has grown into a comprehensive marketplace connecting thousands
-                  of skilled workers with clients across the country. We've built our platform on the principles of
-                  trust, quality, and accessibility.
+                That’s when I decided to build something better.
                 </p>
                 <p>
-                  Today, Revit is helping transform the gig economy for skilled trades, creating opportunities for
-                  professionals to grow their businesses while giving clients peace of mind knowing they're hiring
-                  verified experts.
+                Revit started as a small idea: connect real people with verified professionals in a way that feels simple, secure, and human. What began as a personal mission has grown into a thriving platform helping thousands of people across the country find and hire skilled tradespeople with confidence.
                 </p>
               </div>
             </div>
@@ -61,7 +54,7 @@ export default function AboutPage() {
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-[#333333] mb-4">Our Mission</h2>
               <p className="text-lg text-[#666666] max-w-2xl mx-auto">
-                We're building a future where finding skilled help is as easy as ordering food delivery.
+              I’m on a mission to reshape how we find skilled help — making it as easy and reliable as ordering food online.
               </p>
             </div>
 
@@ -72,7 +65,7 @@ export default function AboutPage() {
                 </div>
                 <h3 className="text-xl font-bold text-[#333333] mb-2">Connect</h3>
                 <p className="text-[#666666]">
-                  Create meaningful connections between skilled professionals and the people who need their services.
+                I believe in creating meaningful connections between professionals and the people who need them.
                 </p>
               </div>
 
@@ -82,7 +75,7 @@ export default function AboutPage() {
                 </div>
                 <h3 className="text-xl font-bold text-[#333333] mb-2">Protect</h3>
                 <p className="text-[#666666]">
-                  Ensure safety and quality through our rigorous verification process and secure payment system.
+                Every Professionals on the platform goes through a verification process to ensure safety and quality.
                 </p>
               </div>
 
@@ -92,41 +85,40 @@ export default function AboutPage() {
                 </div>
                 <h3 className="text-xl font-bold text-[#333333] mb-2">Empower</h3>
                 <p className="text-[#666666]">
-                  Give professionals the tools to grow their business and clients the confidence to get jobs done right.
+                I want to help skilled workers grow their businesses and help clients feel confident their jobs will be done right.
                 </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Team section */}
-        <section className="py-16 px-4 md:px-6">
-          <div className="container mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-[#333333] mb-4">Our Leadership Team</h2>
-              <p className="text-lg text-[#666666] max-w-2xl mx-auto">
-                Meet the people behind Revit who are passionate about transforming the service industry.
-              </p>
-            </div>
+{/* Team section */}
+<section className="py-16 px-4 md:px-6">
+  <div className="container mx-auto">
+    <div className="text-center mb-12">
+      <h2 className="text-3xl font-bold text-[#333333] mb-4">Founder</h2>
+      <p className="text-lg text-[#666666] max-w-2xl mx-auto">
+        Meet the person behind Revit — passionate about transforming the service industry through technology and trust.
+      </p>
+    </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="text-center">
-                  <div className="relative h-64 w-64 mx-auto mb-4 rounded-xl overflow-hidden">
-                    <Image
-                      src={`/placeholder.svg?height=300&width=300&text=Team+Member+${i}`}
-                      alt={`Team member ${i}`}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <h3 className="text-xl font-bold text-[#333333]">John Doe</h3>
-                  <p className="text-[#666666]">Co-Founder & CEO</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+    <div className="flex justify-center">
+      <div className="text-center">
+        <div className="relative h-64 w-64 mx-auto mb-4 rounded-xl overflow-hidden">
+          <Image
+            src="/your-photo.jpg" // Replace with your actual image path
+            alt="Founder photo"
+            fill
+            className="object-cover"
+          />
+        </div>
+        <h3 className="text-xl font-bold text-[#333333]">Art Gonzales</h3>
+        <p className="text-[#666666]">Founder & Developer</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 
         {/* Values section */}
         <section className="py-16 px-4 md:px-6 bg-[#E0E0E0]">
@@ -134,7 +126,7 @@ export default function AboutPage() {
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-[#333333] mb-4">Our Values</h2>
               <p className="text-lg text-[#666666] max-w-2xl mx-auto">
-                The principles that guide everything we do at Revit
+              These are the values I live by and built Revit around:
               </p>
             </div>
 

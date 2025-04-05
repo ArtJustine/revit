@@ -34,7 +34,7 @@ export function HeroSection() {
           </div>
           <div className="relative h-[300px] md:h-[450px] rounded-2xl overflow-hidden shadow-xl transform md:translate-y-4 transition-all duration-500 hover:translate-y-0 hover:shadow-2xl">
             <Image
-              src="/placeholder.svg?height=450&width=500"
+              src="/hero.webp?height=450&width=500"
               alt="Professional worker"
               fill
               className="object-cover"
