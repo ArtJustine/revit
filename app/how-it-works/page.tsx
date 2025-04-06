@@ -60,13 +60,19 @@ export default function HowItWorksPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
               <AnimatedSection animation="slide-in-left">
-                <div className="relative h-[400px] rounded-xl overflow-hidden">
-                  <Image src="/placeholder.svg?height=400&width=600" alt="Post a job" fill className="object-cover" />
+                <div className="relative h-[300px] md:h-[400px] rounded-xl overflow-hidden">
+                  <Image
+                    src="/placeholder.svg?height=400&width=600"
+                    alt="Post a job"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
                 </div>
               </AnimatedSection>
 
               <AnimatedSection animation="slide-in-right">
-                <div className="space-y-6">
+                <div className="space-y-6 relative z-10">
                   <div className="bg-[#00A6A6] h-12 w-12 rounded-full flex items-center justify-center text-white font-bold">
                     1
                   </div>
@@ -95,7 +101,7 @@ export default function HowItWorksPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
               <AnimatedSection animation="slide-in-right" className="order-2 md:order-1">
-                <div className="space-y-6">
+                <div className="space-y-6 relative z-10">
                   <div className="bg-[#00A6A6] h-12 w-12 rounded-full flex items-center justify-center text-white font-bold">
                     2
                   </div>
@@ -122,12 +128,13 @@ export default function HowItWorksPage() {
               </AnimatedSection>
 
               <AnimatedSection animation="slide-in-left" className="order-1 md:order-2">
-                <div className="relative h-[400px] rounded-xl overflow-hidden">
+                <div className="relative h-[300px] md:h-[400px] rounded-xl overflow-hidden">
                   <Image
                     src="/placeholder.svg?height=400&width=600"
                     alt="Compare professionals"
                     fill
                     className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 50vw"
                   />
                 </div>
               </AnimatedSection>
@@ -135,13 +142,13 @@ export default function HowItWorksPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
               <AnimatedSection animation="slide-in-left">
-                <div className="relative h-[400px] rounded-xl overflow-hidden">
+                <div className="relative h-[300px] md:h-[400px] rounded-xl overflow-hidden">
                   <Image src="/placeholder.svg?height=400&width=600" alt="Hire and pay" fill className="object-cover" />
                 </div>
               </AnimatedSection>
 
               <AnimatedSection animation="slide-in-right">
-                <div className="space-y-6">
+                <div className="space-y-6 relative z-10">
                   <div className="bg-[#00A6A6] h-12 w-12 rounded-full flex items-center justify-center text-white font-bold">
                     3
                   </div>
@@ -170,7 +177,7 @@ export default function HowItWorksPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
               <AnimatedSection animation="slide-in-right" className="order-2 md:order-1">
-                <div className="space-y-6">
+                <div className="space-y-6 relative z-10">
                   <div className="bg-[#00A6A6] h-12 w-12 rounded-full flex items-center justify-center text-white font-bold">
                     4
                   </div>
@@ -197,7 +204,7 @@ export default function HowItWorksPage() {
               </AnimatedSection>
 
               <AnimatedSection animation="slide-in-left" className="order-1 md:order-2">
-                <div className="relative h-[400px] rounded-xl overflow-hidden">
+                <div className="relative h-[300px] md:h-[400px] rounded-xl overflow-hidden">
                   <Image
                     src="/placeholder.svg?height=400&width=600"
                     alt="Leave a review"
@@ -216,8 +223,8 @@ export default function HowItWorksPage() {
           </div>
         </section>
 
-        {/* For Professionals section */}
-        <section className="py-16 px-4 md:px-6 bg-[#E0E0E0]">
+        {/* For Professionals section - Fix button z-index and add more bottom padding */}
+        <section className="py-16 px-4 md:px-6 pb-24 bg-[#E0E0E0]">
           <div className="container mx-auto">
             <AnimatedSection animation="fade-up">
               <div className="text-center mb-12">
@@ -228,9 +235,9 @@ export default function HowItWorksPage() {
               </div>
             </AnimatedSection>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-16">
               <AnimatedSection animation="fade-up" delay={100}>
-                <div className="bg-white rounded-xl p-6 text-center relative">
+                <div className="bg-white rounded-xl p-6 text-center relative h-[280px] flex flex-col">
                   <div className="absolute -top-4 -left-4 bg-[#00A6A6] h-10 w-10 rounded-full flex items-center justify-center text-white font-bold">
                     1
                   </div>
@@ -238,14 +245,14 @@ export default function HowItWorksPage() {
                     <Star className="h-8 w-8 text-[#00A6A6]" />
                   </div>
                   <h3 className="text-lg font-bold text-[#333333] mb-2">Create Your Profile</h3>
-                  <p className="text-sm text-[#666666]">
+                  <p className="text-sm text-[#666666] flex-grow">
                     Showcase your skills, experience, and portfolio to stand out to potential clients.
                   </p>
                 </div>
               </AnimatedSection>
 
               <AnimatedSection animation="fade-up" delay={200}>
-                <div className="bg-white rounded-xl p-6 text-center relative">
+                <div className="bg-white rounded-xl p-6 text-center relative h-[280px] flex flex-col">
                   <div className="absolute -top-4 -left-4 bg-[#00A6A6] h-10 w-10 rounded-full flex items-center justify-center text-white font-bold">
                     2
                   </div>
@@ -253,14 +260,14 @@ export default function HowItWorksPage() {
                     <Shield className="h-8 w-8 text-[#00A6A6]" />
                   </div>
                   <h3 className="text-lg font-bold text-[#333333] mb-2">Get Verified</h3>
-                  <p className="text-sm text-[#666666]">
+                  <p className="text-sm text-[#666666] flex-grow">
                     Complete our verification process to build trust with potential clients.
                   </p>
                 </div>
               </AnimatedSection>
 
               <AnimatedSection animation="fade-up" delay={300}>
-                <div className="bg-white rounded-xl p-6 text-center relative">
+                <div className="bg-white rounded-xl p-6 text-center relative h-[280px] flex flex-col">
                   <div className="absolute -top-4 -left-4 bg-[#00A6A6] h-10 w-10 rounded-full flex items-center justify-center text-white font-bold">
                     3
                   </div>
@@ -268,14 +275,14 @@ export default function HowItWorksPage() {
                     <MessageSquare className="h-8 w-8 text-[#00A6A6]" />
                   </div>
                   <h3 className="text-lg font-bold text-[#333333] mb-2">Bid on Jobs</h3>
-                  <p className="text-sm text-[#666666]">
+                  <p className="text-sm text-[#666666] flex-grow">
                     Browse available jobs in your area and submit quotes to interested clients.
                   </p>
                 </div>
               </AnimatedSection>
 
               <AnimatedSection animation="fade-up" delay={400}>
-                <div className="bg-white rounded-xl p-6 text-center relative">
+                <div className="bg-white rounded-xl p-6 text-center relative h-[280px] flex flex-col">
                   <div className="absolute -top-4 -left-4 bg-[#00A6A6] h-10 w-10 rounded-full flex items-center justify-center text-white font-bold">
                     4
                   </div>
@@ -283,14 +290,14 @@ export default function HowItWorksPage() {
                     <Clock className="h-8 w-8 text-[#00A6A6]" />
                   </div>
                   <h3 className="text-lg font-bold text-[#333333] mb-2">Complete Jobs</h3>
-                  <p className="text-sm text-[#666666]">
+                  <p className="text-sm text-[#666666] flex-grow">
                     Deliver quality work to earn great reviews and build your reputation on the platform.
                   </p>
                 </div>
               </AnimatedSection>
             </div>
 
-            <div className="text-center">
+            <div className="text-center relative z-20">
               <Button asChild className="bg-[#00A6A6] hover:bg-[#008f8f] text-white">
                 <Link href="/professional-benefits">Learn More About Professional Benefits</Link>
               </Button>
@@ -298,8 +305,8 @@ export default function HowItWorksPage() {
           </div>
         </section>
 
-        {/* Platform features section */}
-        <section className="py-16 px-4 md:px-6">
+        {/* Platform features section - Add more bottom padding */}
+        <section className="py-16 px-4 md:px-6 pb-24">
           <div className="container mx-auto">
             <AnimatedSection animation="fade-up">
               <div className="text-center mb-12">
@@ -310,14 +317,14 @@ export default function HowItWorksPage() {
               </div>
             </AnimatedSection>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
               <AnimatedSection animation="fade-up" delay={100}>
-                <div className="bg-[#E0E0E0] rounded-xl p-6">
+                <div className="bg-[#E0E0E0] rounded-xl p-6 h-[280px] flex flex-col">
                   <div className="bg-[#00A6A6]/10 h-16 w-16 rounded-full flex items-center justify-center mb-4">
                     <MessageSquare className="h-8 w-8 text-[#00A6A6]" />
                   </div>
                   <h3 className="text-xl font-bold text-[#333333] mb-2">Secure Messaging</h3>
-                  <p className="text-[#666666]">
+                  <p className="text-[#666666] flex-grow">
                     Communicate directly with professionals or clients through our secure messaging system. All
                     conversations are saved for reference.
                   </p>
@@ -325,12 +332,12 @@ export default function HowItWorksPage() {
               </AnimatedSection>
 
               <AnimatedSection animation="fade-up" delay={200}>
-                <div className="bg-[#E0E0E0] rounded-xl p-6">
+                <div className="bg-[#E0E0E0] rounded-xl p-6 h-[280px] flex flex-col">
                   <div className="bg-[#00A6A6]/10 h-16 w-16 rounded-full flex items-center justify-center mb-4">
                     <Shield className="h-8 w-8 text-[#00A6A6]" />
                   </div>
                   <h3 className="text-xl font-bold text-[#333333] mb-2">Secure Payments</h3>
-                  <p className="text-[#666666]">
+                  <p className="text-[#666666] flex-grow">
                     Our escrow payment system protects both clients and professionals. Funds are only released when the
                     job is completed satisfactorily.
                   </p>
@@ -338,12 +345,12 @@ export default function HowItWorksPage() {
               </AnimatedSection>
 
               <AnimatedSection animation="fade-up" delay={300}>
-                <div className="bg-[#E0E0E0] rounded-xl p-6">
+                <div className="bg-[#E0E0E0] rounded-xl p-6 h-[280px] flex flex-col">
                   <div className="bg-[#00A6A6]/10 h-16 w-16 rounded-full flex items-center justify-center mb-4">
                     <Star className="h-8 w-8 text-[#00A6A6]" />
                   </div>
                   <h3 className="text-xl font-bold text-[#333333] mb-2">Review System</h3>
-                  <p className="text-[#666666]">
+                  <p className="text-[#666666] flex-grow">
                     Our transparent review system helps maintain quality standards. All reviews are verified to ensure
                     they come from real clients.
                   </p>
@@ -353,8 +360,8 @@ export default function HowItWorksPage() {
           </div>
         </section>
 
-        {/* FAQ section */}
-        <section className="py-16 px-4 md:px-6 bg-[#E0E0E0]">
+        {/* FAQ section - Fix bottom padding */}
+        <section className="py-16 px-4 md:px-6 pb-24 bg-[#E0E0E0]">
           <div className="container mx-auto max-w-4xl">
             <AnimatedSection animation="fade-up">
               <div className="text-center mb-12">
@@ -365,9 +372,9 @@ export default function HowItWorksPage() {
               </div>
             </AnimatedSection>
 
-            <div className="space-y-6">
+            <div className="space-y-6 mb-8">
               <AnimatedSection animation="fade-up" delay={100}>
-                <div className="bg-white rounded-xl p-6">
+                <div className="bg-white rounded-xl p-6 pb-8">
                   <h3 className="text-lg font-bold text-[#333333] mb-2">How much does it cost to use Revit?</h3>
                   <p className="text-[#666666]">
                     It's free to sign up and post jobs on Revit. For clients, we charge a small service fee only when
@@ -377,7 +384,7 @@ export default function HowItWorksPage() {
               </AnimatedSection>
 
               <AnimatedSection animation="fade-up" delay={200}>
-                <div className="bg-white rounded-xl p-6">
+                <div className="bg-white rounded-xl p-6 pb-8">
                   <h3 className="text-lg font-bold text-[#333333] mb-2">How are professionals verified?</h3>
                   <p className="text-[#666666]">
                     We verify identity, conduct background checks, validate credentials and licenses, and collect
@@ -387,7 +394,7 @@ export default function HowItWorksPage() {
               </AnimatedSection>
 
               <AnimatedSection animation="fade-up" delay={300}>
-                <div className="bg-white rounded-xl p-6">
+                <div className="bg-white rounded-xl p-6 pb-8">
                   <h3 className="text-lg font-bold text-[#333333] mb-2">What if I'm not satisfied with the work?</h3>
                   <p className="text-[#666666]">
                     We offer a satisfaction guarantee. If you're not happy with the work, you can request revisions or

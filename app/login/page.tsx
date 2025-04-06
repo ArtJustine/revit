@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -13,6 +14,7 @@ import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { useAuth } from "@/lib/firebase/auth-context"
 
 const formSchema = z.object({
   email: z.string().email({
@@ -26,6 +28,10 @@ const formSchema = z.object({
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [loginError, setLoginError] = useState("")
+  const router = useRouter()
+  const { signIn } = useAuth()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -36,10 +42,24 @@ export default function LoginPage() {
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // In a real application, you would handle form submission here
-    console.log(values)
-    // Redirect to dashboard or show success message
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsSubmitting(true)
+    setLoginError("")
+
+    try {
+      // Sign in with Firebase (commented out for now, using mock function)
+      await signIn(values.email, values.password)
+
+      // Check user type and redirect accordingly
+      // In a real app, you would fetch the user's profile from Firestore
+      // For now, we'll just redirect to the dashboard
+      router.push("/dashboard")
+    } catch (error: any) {
+      console.error("Login error:", error)
+      setLoginError(error.message || "Invalid email or password. Please try again.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -118,8 +138,18 @@ export default function LoginPage() {
                   </Link>
                 </div>
 
-                <Button type="submit" className="w-full bg-[#00A6A6] hover:bg-[#008f8f] text-white">
-                  Log In
+                {loginError && (
+                  <div className="p-3 bg-red-50 border border-red-200 text-red-700 rounded-md text-sm">
+                    {loginError}
+                  </div>
+                )}
+
+                <Button
+                  type="submit"
+                  className="w-full bg-[#00A6A6] hover:bg-[#008f8f] text-white"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Logging in..." : "Log In"}
                 </Button>
               </form>
             </Form>
