@@ -47,16 +47,30 @@ export default function LoginPage() {
     setLoginError("")
 
     try {
-      // Sign in with Firebase (commented out for now, using mock function)
-      await signIn(values.email, values.password)
+      const user = await signIn(values.email, values.password)
 
-      // Check user type and redirect accordingly
-      // In a real app, you would fetch the user's profile from Firestore
-      // For now, we'll just redirect to the dashboard
-      router.push("/dashboard")
+      // Get user data from Firestore to determine user type
+      const userDoc = await fetch(`/api/users/${user.uid}`).then((res) => res.json())
+
+      // Redirect based on user type
+      if (userDoc.userType === "client") {
+        router.push("/dashboard")
+      } else if (userDoc.userType === "professional") {
+        router.push("/professional/dashboard")
+      } else {
+        router.push("/dashboard")
+      }
     } catch (error: any) {
       console.error("Login error:", error)
-      setLoginError(error.message || "Invalid email or password. Please try again.")
+
+      // Handle specific Firebase auth errors
+      if (error.code === "auth/user-not-found" || error.code === "auth/wrong-password") {
+        setLoginError("Invalid email or password. Please try again.")
+      } else if (error.code === "auth/too-many-requests") {
+        setLoginError("Too many failed login attempts. Please try again later.")
+      } else {
+        setLoginError(error.message || "Invalid email or password. Please try again.")
+      }
     } finally {
       setIsSubmitting(false)
     }

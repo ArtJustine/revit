@@ -3,16 +3,27 @@
 import type React from "react"
 
 import { createContext, useContext, useEffect, useState } from "react"
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut as firebaseSignOut,
+  onAuthStateChanged,
+  updateProfile,
+  sendPasswordResetEmail,
+  type User as FirebaseUser,
+} from "firebase/auth"
+import { doc, setDoc, getDoc } from "firebase/firestore"
+import { auth, db } from "./config"
 
-// Mock User type for development
-type User = {
-  uid: string
-  email: string | null
-  displayName: string | null
+// User type
+type User = FirebaseUser & {
+  userType?: string
+  additionalData?: any
 }
 
 interface AuthContextType {
   user: User | null
+  userData: any | null
   loading: boolean
   signUp: (
     email: string,
@@ -31,25 +42,40 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
+  const [userData, setUserData] = useState<any | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Mock authentication state change
-    const timeout = setTimeout(() => {
+    // Set up the Firebase auth state observer
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        // User is signed in
+        const user = firebaseUser as User
+        setUser(user)
+
+        // Fetch additional user data from Firestore
+        try {
+          const userDoc = await getDoc(doc(db, "users", user.uid))
+          if (userDoc.exists()) {
+            const userData = userDoc.data()
+            setUserData(userData)
+            // Add userType to the user object
+            user.userType = userData.userType
+            user.additionalData = userData
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error)
+        }
+      } else {
+        // User is signed out
+        setUser(null)
+        setUserData(null)
+      }
       setLoading(false)
-    }, 1000)
+    })
 
-    return () => clearTimeout(timeout)
-
-    // Commented out Firebase auth listener
-    /*
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-    */
+    // Clean up the observer when the component unmounts
+    return () => unsubscribe()
   }, [])
 
   const signUp = async (
@@ -60,35 +86,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     userType: string,
     additionalData?: any,
   ) => {
-    // Mock sign up functionality
-    console.log("Sign up called with:", { email, password, firstName, lastName, userType, additionalData })
-
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    // Create mock user
-    const mockUser = {
-      uid: `mock-uid-${Date.now()}`,
-      email,
-      displayName: `${firstName} ${lastName}`,
-    }
-
-    setUser(mockUser)
-    return mockUser
-
-    // Commented out Firebase sign up
-    /*
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
+      // Create user with email and password
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+      const user = userCredential.user as User
 
       // Update profile with display name
       await updateProfile(user, {
-        displayName: `${firstName} ${lastName}`
-      });
+        displayName: `${firstName} ${lastName}`,
+      })
 
       // Create user document in Firestore
-      await setDoc(doc(db, "users", user.uid), {
+      const userData = {
         uid: user.uid,
         email,
         firstName,
@@ -96,86 +105,53 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         displayName: `${firstName} ${lastName}`,
         userType,
         createdAt: new Date().toISOString(),
-        ...additionalData
-      });
+        ...additionalData,
+      }
 
-      return user;
+      await setDoc(doc(db, "users", user.uid), userData)
+
+      // Add userType to the user object
+      user.userType = userType
+      user.additionalData = userData
+
+      return user
     } catch (error) {
-      console.error("Error signing up:", error);
-      throw error;
+      console.error("Error signing up:", error)
+      throw error
     }
-    */
   }
 
   const signIn = async (email: string, password: string) => {
-    // Mock sign in functionality
-    console.log("Sign in called with:", { email, password })
-
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    // Create mock user
-    const mockUser = {
-      uid: `mock-uid-${Date.now()}`,
-      email,
-      displayName: email.split("@")[0],
-    }
-
-    setUser(mockUser)
-    return mockUser
-
-    // Commented out Firebase sign in
-    /*
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      return userCredential.user;
+      const userCredential = await signInWithEmailAndPassword(auth, email, password)
+      return userCredential.user as User
     } catch (error) {
-      console.error("Error signing in:", error);
-      throw error;
+      console.error("Error signing in:", error)
+      throw error
     }
-    */
   }
 
   const signOut = async () => {
-    // Mock sign out functionality
-    console.log("Sign out called")
-
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 500))
-
-    setUser(null)
-
-    // Commented out Firebase sign out
-    /*
     try {
-      await firebaseSignOut(auth);
+      await firebaseSignOut(auth)
     } catch (error) {
-      console.error("Error signing out:", error);
-      throw error;
+      console.error("Error signing out:", error)
+      throw error
     }
-    */
   }
 
   const resetPassword = async (email: string) => {
-    // Mock password reset functionality
-    console.log("Password reset called with:", email)
-
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    // Commented out Firebase password reset
-    /*
     try {
-      await sendPasswordResetEmail(auth, email);
+      await sendPasswordResetEmail(auth, email)
     } catch (error) {
-      console.error("Error resetting password:", error);
-      throw error;
+      console.error("Error resetting password:", error)
+      throw error
     }
-    */
   }
 
   const value = {
     user,
+    userData,
     loading,
     signUp,
     signIn,
