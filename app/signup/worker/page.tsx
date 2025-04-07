@@ -15,6 +15,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { useAuth } from "@/lib/firebase/auth-context"
 
 const formSchema = z
   .object({
@@ -58,6 +59,7 @@ export default function WorkerSignupPage() {
   const [submitSuccess, setSubmitSuccess] = useState(false)
   const [submitError, setSubmitError] = useState("")
   const router = useRouter()
+  const { signUp } = useAuth()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -74,28 +76,38 @@ export default function WorkerSignupPage() {
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Show loading state
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    // Reset states before starting a new submission
     setIsSubmitting(true)
+    setSubmitSuccess(false)
+    setSubmitError("")
 
-    // Simulate API call with a timeout
-    setTimeout(() => {
-      console.log("Form values:", values)
+    try {
+      // Sign up with Firebase
+      const user = await signUp(values.email, values.password, values.firstName, values.lastName, "professional", {
+        phone: values.phone,
+        profession: values.profession,
+        experience: values.experience,
+      })
+
+      console.log("Worker signup successful:", user)
 
       // Show success message
       setSubmitSuccess(true)
+      
+      // Reset the submitting state
       setIsSubmitting(false)
 
       // Redirect to professional dashboard after a short delay
       setTimeout(() => {
         router.push("/professional/dashboard")
       }, 2000)
-
-      // NOTE: Firebase integration will be added here later
-      // This would include:
-      // 1. Creating the user with Firebase Authentication
-      // 2. Storing additional user data in Firestore
-    }, 1500)
+    } catch (error: any) {
+      console.error("Signup error:", error)
+      setSubmitError(error.message || "An error occurred during signup. Please try again.")
+      // Reset the submitting state on error
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -315,9 +327,9 @@ export default function WorkerSignupPage() {
                 <Button
                   type="submit"
                   className="w-full bg-[#00A6A6] hover:bg-[#008f8f] text-white"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || submitSuccess}
                 >
-                  {isSubmitting ? "Creating Account..." : "Create Professional Account"}
+                  {isSubmitting ? "Creating Account..." : submitSuccess ? "Account Created!" : "Create Professional Account"}
                 </Button>
               </form>
             </Form>
@@ -345,4 +357,3 @@ export default function WorkerSignupPage() {
     </div>
   )
 }
-

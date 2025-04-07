@@ -69,11 +69,16 @@ export default function ClientSignupPage() {
     setSubmitError("")
 
     try {
-      // Sign up with Firebase (commented out for now, using mock function)
-      await signUp(values.email, values.password, values.firstName, values.lastName, "client")
+      // Sign up with Firebase
+      const user = await signUp(values.email, values.password, values.firstName, values.lastName, "client")
+
+      console.log("Client signup successful:", user)
 
       // Show success message
       setSubmitSuccess(true)
+
+      // Important: Reset submitting state
+      setIsSubmitting(false)
 
       // Redirect to dashboard after a short delay
       setTimeout(() => {
@@ -82,8 +87,7 @@ export default function ClientSignupPage() {
     } catch (error: any) {
       console.error("Signup error:", error)
       setSubmitError(error.message || "An error occurred during signup. Please try again.")
-    } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false) // Reset submitting state on error
     }
   }
 

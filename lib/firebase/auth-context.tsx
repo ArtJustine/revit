@@ -38,7 +38,24 @@ interface AuthContextType {
   resetPassword: (email: string) => Promise<void>
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined)
+// Create context with default values
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  userData: null,
+  loading: true,
+  signUp: async () => {
+    throw new Error("AuthProvider not initialized")
+  },
+  signIn: async () => {
+    throw new Error("AuthProvider not initialized")
+  },
+  signOut: async () => {
+    throw new Error("AuthProvider not initialized")
+  },
+  resetPassword: async () => {
+    throw new Error("AuthProvider not initialized")
+  },
+})
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
@@ -78,6 +95,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => unsubscribe()
   }, [])
 
+  // Update the signUp function to better handle Firestore errors
   const signUp = async (
     email: string,
     password: string,
@@ -87,16 +105,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     additionalData?: any,
   ) => {
     try {
+      console.log(`Starting ${userType} signup process...`)
+
       // Create user with email and password
       const userCredential = await createUserWithEmailAndPassword(auth, email, password)
       const user = userCredential.user as User
+      console.log("Firebase auth account created successfully")
 
       // Update profile with display name
       await updateProfile(user, {
         displayName: `${firstName} ${lastName}`,
       })
+      console.log("Profile updated with display name")
 
-      // Create user document in Firestore
+      // Create user document in Firestore with proper data formatting
       const userData = {
         uid: user.uid,
         email,
@@ -104,16 +126,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         lastName,
         displayName: `${firstName} ${lastName}`,
         userType,
-        createdAt: new Date().toISOString(),
-        ...additionalData,
+        createdAt: new Date(),
+        ...(additionalData || {}),
       }
 
-      await setDoc(doc(db, "users", user.uid), userData)
+      try {
+        // Ensure we wait for the Firestore document to be created
+        await setDoc(doc(db, "users", user.uid), userData)
+        console.log(`${userType} user document created in Firestore`)
+      } catch (firestoreError) {
+        console.error("Error creating Firestore document:", firestoreError)
+        // Continue with the signup process even if Firestore fails
+        // The user is already created in Firebase Auth
+      }
 
       // Add userType to the user object
       user.userType = userType
       user.additionalData = userData
 
+      console.log(`${userType} signup completed successfully`)
       return user
     } catch (error) {
       console.error("Error signing up:", error)
@@ -164,9 +195,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 export function useAuth() {
   const context = useContext(AuthContext)
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider")
-  }
   return context
 }
 

@@ -15,6 +15,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { useAuth } from "@/lib/firebase/auth-context"
+import { getUserProfile } from "@/lib/firebase/utils"
 
 const formSchema = z.object({
   email: z.string().email({
@@ -47,19 +48,32 @@ export default function LoginPage() {
     setLoginError("")
 
     try {
+      // Sign in with Firebase
       const user = await signIn(values.email, values.password)
+      console.log("Login successful:", user)
 
-      // Get user data from Firestore to determine user type
-      const userDoc = await fetch(`/api/users/${user.uid}`).then((res) => res.json())
+      // Wait a moment for the auth state to update
+      setTimeout(async () => {
+        try {
+          // Get user data from Firestore
+          const userDoc = await getUserProfile(user.uid)
+          console.log("User profile:", userDoc)
 
-      // Redirect based on user type
-      if (userDoc.userType === "client") {
-        router.push("/dashboard")
-      } else if (userDoc.userType === "professional") {
-        router.push("/professional/dashboard")
-      } else {
-        router.push("/dashboard")
-      }
+          // Redirect based on user type
+          if (userDoc?.userType === "client") {
+            router.push("/dashboard")
+          } else if (userDoc?.userType === "professional") {
+            router.push("/professional/dashboard")
+          } else {
+            // Default fallback
+            router.push("/dashboard")
+          }
+        } catch (err) {
+          console.error("Error fetching user profile:", err)
+          // Default redirect if we can't determine user type
+          router.push("/dashboard")
+        }
+      }, 500)
     } catch (error: any) {
       console.error("Login error:", error)
 
@@ -71,7 +85,6 @@ export default function LoginPage() {
       } else {
         setLoginError(error.message || "Invalid email or password. Please try again.")
       }
-    } finally {
       setIsSubmitting(false)
     }
   }
