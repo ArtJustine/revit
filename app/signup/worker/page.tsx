@@ -77,36 +77,38 @@ export default function WorkerSignupPage() {
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Reset states before starting a new submission
+    // Show loading state
     setIsSubmitting(true)
-    setSubmitSuccess(false)
     setSubmitError("")
 
     try {
       // Sign up with Firebase
-      const user = await signUp(values.email, values.password, values.firstName, values.lastName, "professional", {
+      const result = await signUp(values.email, values.password, values.firstName, values.lastName, "professional", {
         phone: values.phone,
         profession: values.profession,
         experience: values.experience,
       })
 
-      console.log("Worker signup successful:", user)
+      console.log("Worker signup result:", result)
+
+      // IMPORTANT: Reset submitting state BEFORE showing success
+      setIsSubmitting(false)
 
       // Show success message
       setSubmitSuccess(true)
-      
-      // Reset the submitting state
-      setIsSubmitting(false)
 
-      // Redirect to professional dashboard after a short delay
+      // Log the success state to verify it's set correctly
+      console.log("Submit success state set to:", true)
+
+      // Redirect to professional dashboard after a short delay to ensure the success message is shown
       setTimeout(() => {
+        console.log("Redirecting to professional dashboard...")
         router.push("/professional/dashboard")
       }, 2000)
     } catch (error: any) {
       console.error("Signup error:", error)
       setSubmitError(error.message || "An error occurred during signup. Please try again.")
-      // Reset the submitting state on error
-      setIsSubmitting(false)
+      setIsSubmitting(false) // Reset submitting state on error
     }
   }
 
@@ -327,16 +329,30 @@ export default function WorkerSignupPage() {
                 <Button
                   type="submit"
                   className="w-full bg-[#00A6A6] hover:bg-[#008f8f] text-white"
-                  disabled={isSubmitting || submitSuccess}
+                  disabled={isSubmitting}
                 >
-                  {isSubmitting ? "Creating Account..." : submitSuccess ? "Account Created!" : "Create Professional Account"}
+                  {isSubmitting ? "Creating Account..." : "Create Professional Account"}
                 </Button>
               </form>
             </Form>
 
             {submitSuccess && (
-              <div className="mt-4 p-4 bg-green-50 text-green-700 rounded-md">
-                Professional account created successfully! Redirecting to dashboard...
+              <div className="mt-4 p-4 bg-green-50 border border-green-200 text-green-700 rounded-md flex items-center">
+                <div className="mr-3">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6 text-green-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="font-medium">Professional account created successfully!</p>
+                  <p className="text-sm">Redirecting to dashboard...</p>
+                </div>
               </div>
             )}
 
@@ -357,3 +373,4 @@ export default function WorkerSignupPage() {
     </div>
   )
 }
+

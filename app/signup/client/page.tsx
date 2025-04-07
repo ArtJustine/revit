@@ -70,18 +70,22 @@ export default function ClientSignupPage() {
 
     try {
       // Sign up with Firebase
-      const user = await signUp(values.email, values.password, values.firstName, values.lastName, "client")
+      const result = await signUp(values.email, values.password, values.firstName, values.lastName, "client")
 
-      console.log("Client signup successful:", user)
+      console.log("Client signup result:", result)
+
+      // IMPORTANT: Reset submitting state BEFORE showing success
+      setIsSubmitting(false)
 
       // Show success message
       setSubmitSuccess(true)
 
-      // Important: Reset submitting state
-      setIsSubmitting(false)
+      // Log the success state to verify it's set correctly
+      console.log("Submit success state set to:", true)
 
-      // Redirect to dashboard after a short delay
+      // Redirect to dashboard after a short delay to ensure the success message is shown
       setTimeout(() => {
+        console.log("Redirecting to dashboard...")
         router.push("/dashboard")
       }, 2000)
     } catch (error: any) {
@@ -252,8 +256,22 @@ export default function ClientSignupPage() {
             </Form>
 
             {submitSuccess && (
-              <div className="mt-4 p-4 bg-green-50 text-green-700 rounded-md">
-                Account created successfully! Redirecting to dashboard...
+              <div className="mt-4 p-4 bg-green-50 border border-green-200 text-green-700 rounded-md flex items-center">
+                <div className="mr-3">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6 text-green-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="font-medium">Account created successfully!</p>
+                  <p className="text-sm">Redirecting to dashboard...</p>
+                </div>
               </div>
             )}
 

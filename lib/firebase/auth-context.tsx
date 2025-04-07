@@ -32,7 +32,7 @@ interface AuthContextType {
     lastName: string,
     userType: string,
     additionalData?: any,
-  ) => Promise<User>
+  ) => Promise<{ user: User; firestoreSuccess: boolean; userData: any }>
   signIn: (email: string, password: string) => Promise<User>
   signOut: () => Promise<void>
   resetPassword: (email: string) => Promise<void>
@@ -95,7 +95,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => unsubscribe()
   }, [])
 
-  // Update the signUp function to better handle Firestore errors
+  // Update the signUp function to better handle Firestore errors and return a more complete result
   const signUp = async (
     email: string,
     password: string,
@@ -126,16 +126,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         lastName,
         displayName: `${firstName} ${lastName}`,
         userType,
-        createdAt: new Date(),
+        createdAt: new Date(), // This will be properly converted to Firestore timestamp
         ...(additionalData || {}),
       }
 
+      let firestoreSuccess = true
       try {
         // Ensure we wait for the Firestore document to be created
         await setDoc(doc(db, "users", user.uid), userData)
         console.log(`${userType} user document created in Firestore`)
       } catch (firestoreError) {
         console.error("Error creating Firestore document:", firestoreError)
+        firestoreSuccess = false
         // Continue with the signup process even if Firestore fails
         // The user is already created in Firebase Auth
       }
@@ -145,7 +147,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       user.additionalData = userData
 
       console.log(`${userType} signup completed successfully`)
-      return user
+      return {
+        user,
+        firestoreSuccess,
+        userData,
+      }
     } catch (error) {
       console.error("Error signing up:", error)
       throw error
