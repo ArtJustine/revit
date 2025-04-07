@@ -16,7 +16,7 @@ export function Footer() {
             </p>
             <div className="flex space-x-4">
               <Link
-                href="#"
+                href="https://www.facebook.com/revitapp.ph/"
                 className="text-gray-300 hover:text-[#00A6A6] bg-gray-800 p-2 rounded-full transition-colors"
               >
                 <Facebook className="h-5 w-5" />
@@ -30,7 +30,7 @@ export function Footer() {
                 <span className="sr-only">Twitter</span>
               </Link>
               <Link
-                href="#"
+                href="https://www.instagram.com/revitapp_ph"
                 className="text-gray-300 hover:text-[#00A6A6] bg-gray-800 p-2 rounded-full transition-colors"
               >
                 <Instagram className="h-5 w-5" />

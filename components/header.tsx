@@ -2,14 +2,24 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Menu } from "lucide-react"
+import { Menu, User } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { useAuth } from "@/lib/firebase/auth-context"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const { user, userData, signOut } = useAuth()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,6 +29,19 @@ export function Header() {
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
+  const handleSignOut = async () => {
+    try {
+      await signOut()
+    } catch (error) {
+      console.error("Error signing out:", error)
+    }
+  }
+
+  const getDashboardLink = () => {
+    if (!userData) return "/dashboard"
+    return userData.userType === "professional" ? "/professional/dashboard" : "/dashboard"
+  }
 
   return (
     <header
@@ -75,9 +98,40 @@ export function Header() {
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
-          <Button asChild className="bg-[#00A6A6] hover:bg-[#008f8f] text-white rounded-full px-6">
-            <Link href="/signup">Sign Up</Link>
-          </Button>
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="icon" className="rounded-full h-10 w-10 border-[#00A6A6]">
+                  <User className="h-5 w-5 text-[#00A6A6]" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link href={getDashboardLink()}>Dashboard</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href={userData?.userType === "professional" ? "/professional/profile" : "/dashboard/profile"}>
+                    Profile
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href={userData?.userType === "professional" ? "/professional/settings" : "/dashboard/settings"}>
+                    Settings
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleSignOut}>Sign Out</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <>
+              <Button asChild className="bg-[#00A6A6] hover:bg-[#008f8f] text-white rounded-full px-6">
+                <Link href="/signup">Sign Up</Link>
+              </Button>
+            </>
+          )}
         </div>
 
         {/* Mobile navigation */}
@@ -132,11 +186,28 @@ export function Header() {
               </Link>
 
               <div className="flex flex-col gap-2 mt-8">
-                <Button asChild className="w-full bg-[#00A6A6] hover:bg-[#008f8f] text-white rounded-full">
-                  <Link href="/signup" onClick={() => setIsMenuOpen(false)}>
-                    Sign Up
-                  </Link>
-                </Button>
+                {user ? (
+                  <>
+                    <Button asChild className="w-full bg-[#00A6A6] hover:bg-[#008f8f] text-white rounded-full">
+                      <Link href={getDashboardLink()} onClick={() => setIsMenuOpen(false)}>
+                        Dashboard
+                      </Link>
+                    </Button>
+                    <Button
+                      onClick={handleSignOut}
+                      variant="outline"
+                      className="w-full border-[#00A6A6] text-[#00A6A6]"
+                    >
+                      Sign Out
+                    </Button>
+                  </>
+                ) : (
+                  <Button asChild className="w-full bg-[#00A6A6] hover:bg-[#008f8f] text-white rounded-full">
+                    <Link href="/signup" onClick={() => setIsMenuOpen(false)}>
+                      Sign Up
+                    </Link>
+                  </Button>
+                )}
               </div>
             </nav>
           </SheetContent>
