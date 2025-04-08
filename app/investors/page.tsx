@@ -106,19 +106,21 @@ export default function InvestorsPage() {
             </AnimatedSection>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-8">
-              <AnimatedSection animation="slide-in-left" className="relative">
-                <div className="relative h-[400px] rounded-xl overflow-hidden">
-                  <Image
-                    src="/placeholder.svg?height=400&width=600"
-                    alt="Market growth chart"
-                    fill
-                    className="object-cover"
-                  />
+              <AnimatedSection animation="fade-up" delay={100}>
+                <div className="bg-white p-4 rounded-xl">
+                  <div className="relative h-[400px] rounded-xl overflow-hidden">
+                    <Image
+                      src="/placeholder.svg?height=400&width=600"
+                      alt="Market growth chart"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
                 </div>
               </AnimatedSection>
 
-              <AnimatedSection animation="slide-in-right">
-                <div className="space-y-6">
+              <AnimatedSection animation="fade-up" delay={200}>
+                <div className="space-y-6 bg-[#E0E0E0] p-6 rounded-xl">
                   <h3 className="text-2xl font-bold text-[#333333]">A Growing Industry</h3>
                   <p className="text-[#666666]">
                     The skilled trades industry is experiencing significant growth, driven by:
@@ -174,8 +176,8 @@ export default function InvestorsPage() {
             </AnimatedSection>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-8">
-              <AnimatedSection animation="slide-in-right" className="order-2 md:order-1">
-                <div className="space-y-6">
+              <AnimatedSection animation="fade-up" delay={100} className="order-2 md:order-1">
+                <div className="space-y-6 bg-white p-6 rounded-xl">
                   <h3 className="text-2xl font-bold text-[#333333]">Revenue Streams</h3>
                   <ul className="space-y-4">
                     <li className="flex items-start gap-3">
@@ -212,14 +214,16 @@ export default function InvestorsPage() {
                 </div>
               </AnimatedSection>
 
-              <AnimatedSection animation="slide-in-left" className="order-1 md:order-2 relative">
-                <div className="relative h-[400px] rounded-xl overflow-hidden">
-                  <Image
-                    src="/placeholder.svg?height=400&width=600"
-                    alt="Business model diagram"
-                    fill
-                    className="object-cover"
-                  />
+              <AnimatedSection animation="fade-up" delay={200} className="order-1 md:order-2">
+                <div className="bg-white p-4 rounded-xl">
+                  <div className="relative h-[400px] rounded-xl overflow-hidden">
+                    <Image
+                      src="/placeholder.svg?height=400&width=600"
+                      alt="Business model diagram"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
                 </div>
               </AnimatedSection>
             </div>
