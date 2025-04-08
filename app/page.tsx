@@ -45,7 +45,7 @@ export default function Home() {
           </div>
           <div
             className="relative z-10 p-6 text-center bg-cover bg-center backdrop-blur-sm h-full flex flex-col"
-            style={{ backgroundImage: "url('/post-your-job.jpg')" }}
+            style={{ backgroundImage: "url('/post-your-job.webp')" }}
           >
             {/* White overlay with reduced opacity */}
             <div className="absolute inset-0 bg-black opacity-60 z-0"></div>
@@ -75,7 +75,7 @@ export default function Home() {
           </div>
           <div
             className="relative z-10 p-6 text-center bg-cover bg-center backdrop-blur-sm h-full flex flex-col"
-            style={{ backgroundImage: "url('/compare-professionals.jpg')" }}
+            style={{ backgroundImage: "url('/compare-professionals.webp')" }}
           >
             <div className="absolute inset-0 bg-black opacity-60 z-0"></div>
             <div className="relative z-10">
@@ -104,7 +104,7 @@ export default function Home() {
           </div>
           <div
             className="relative z-10 p-6 text-center bg-cover bg-center backdrop-blur-sm h-full flex flex-col"
-            style={{ backgroundImage: "url('/hire.jpg')" }}
+            style={{ backgroundImage: "url('/hire.webp')" }}
           >
             <div className="absolute inset-0 bg-black opacity-60 z-0"></div>
             <div className="relative z-10">
