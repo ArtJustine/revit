@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Facebook, Instagram, Twitter } from "lucide-react"
+import { Facebook, Instagram, Twitter, Youtube } from "lucide-react"
 
 export function Footer() {
   return (
@@ -26,8 +26,8 @@ export function Footer() {
                 href="#"
                 className="text-gray-300 hover:text-[#00A6A6] bg-gray-800 p-2 rounded-full transition-colors"
               >
-                <Twitter className="h-5 w-5" />
-                <span className="sr-only">Twitter</span>
+                <Youtube className="h-5 w-5" />
+                <span className="sr-only">YouTube</span>
               </Link>
               <Link
                 href="https://www.instagram.com/revitapp_ph"

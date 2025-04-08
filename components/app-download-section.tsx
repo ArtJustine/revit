@@ -4,12 +4,12 @@ import { Phone } from "lucide-react"
 
 export function AppDownloadSection() {
   return (
-    <section className="py-16 px-4 md:px-6 bg-[#00A6A6] text-white">
+    <section className="py-5 px-4 md:px-6 bg-[#E0E0E0] text-white">
       <div className="container mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div className="space-y-6">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Get the Revit App</h2>
-            <p className="text-lg max-w-md">
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-[#333333]">Get the Revit App</h2>
+            <p className="text-lg max-w-md text-[#333333]">
               Download our mobile app to find professionals or get jobs on the go. Available for iOS and Android
               devices.
             </p>
@@ -20,13 +20,18 @@ export function AppDownloadSection() {
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto"
               >
-                <div className="bg-black rounded-xl p-3 sm:p-2 flex items-center justify-center sm:justify-start hover:bg-gray-900 transition-colors">
+                <div className="bg-black rounded-xl p-3 sm:p-2 flex items-center justify-center sm:justify-start hover:bg-[#006666]">
                   <div className="mr-3">
-                    <Phone className="h-6 w-6 sm:h-8 sm:w-8" />
+                    <Image
+                      src="/appstore.png"
+                      alt="Apple icon"
+                      width={32}
+                      height={32}
+                      className="sm:w-8 sm:h-8 w-6 h-6"/>
                   </div>
                   <div>
-                    <p className="text-xs">Download on the</p>
-                    <p className="text-base sm:text-lg font-semibold">App Store</p>
+                    <p className="text-xs text-white">Download on the</p>
+                    <p className="text-base sm:text-lg font-semibold text-white">App Store</p>
                   </div>
                 </div>
               </Link>
@@ -36,24 +41,31 @@ export function AppDownloadSection() {
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto"
               >
-                <div className="bg-black rounded-xl p-3 sm:p-2 flex items-center justify-center sm:justify-start hover:bg-gray-900 transition-colors">
+                <div className="bg-black rounded-xl p-3 sm:p-2 flex items-center justify-center sm:justify-start hover:bg-[#006666]">
                   <div className="mr-3">
-                    <Phone className="h-6 w-6 sm:h-8 sm:w-8" />
+                    <Image
+                      src="/google.png"
+                      alt="Apple icon"
+                      width={32}
+                      height={32}
+                      className="sm:w-8 sm:h-8 w-6 h-6"/>
                   </div>
                   <div>
-                    <p className="text-xs">GET IT ON</p>
-                    <p className="text-base sm:text-lg font-semibold">Google Play</p>
+                    <p className="text-xs text-white">GET IT ON</p>
+                    <p className="text-base sm:text-lg font-semibold text-white">Google Play</p>
                   </div>
                 </div>
               </Link>
             </div>
           </div>
-          <div className="relative h-[400px] md:h-[500px] flex justify-center">
-            <div className="relative h-full w-[250px]">
+          <div className="relative w-full flex justify-center">
+            <div className="relative w-full max-w-md">
               <Image
-                src="/placeholder.svg?height=500&width=250"
+                src="/revitapp.webp"
                 alt="Revit mobile app"
-                fill
+                layout="responsive"
+                width={500}
+                height={1000}
                 className="object-contain"
               />
             </div>
