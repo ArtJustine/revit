@@ -77,12 +77,10 @@ export default function WorkerSignupPage() {
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Show loading state
     setIsSubmitting(true)
     setSubmitError("")
 
     try {
-      // Sign up with Firebase
       const result = await signUp(values.email, values.password, values.firstName, values.lastName, "professional", {
         phone: values.phone,
         profession: values.profession,
@@ -91,24 +89,16 @@ export default function WorkerSignupPage() {
 
       console.log("Worker signup result:", result)
 
-      // IMPORTANT: Reset submitting state BEFORE showing success
       setIsSubmitting(false)
-
-      // Show success message
       setSubmitSuccess(true)
 
-      // Log the success state to verify it's set correctly
-      console.log("Submit success state set to:", true)
-
-      // Redirect to professional dashboard after a short delay to ensure the success message is shown
       setTimeout(() => {
-        console.log("Redirecting to professional dashboard...")
         router.push("/professional/dashboard")
       }, 2000)
     } catch (error: any) {
       console.error("Signup error:", error)
       setSubmitError(error.message || "An error occurred during signup. Please try again.")
-      setIsSubmitting(false) // Reset submitting state on error
+      setIsSubmitting(false)
     }
   }
 
@@ -311,61 +301,35 @@ export default function WorkerSignupPage() {
                       </FormControl>
                       <div className="space-y-1 leading-none">
                         <FormLabel>
-                          I agree to the{" "}
-                          <Link href="/terms" className="text-[#00A6A6] hover:underline">
-                            terms and conditions
-                          </Link>{" "}
-                          and{" "}
-                          <Link href="/privacy" className="text-[#00A6A6] hover:underline">
-                            privacy policy
-                          </Link>
+                          <span className="text-sm text-[#666666]">
+                            I agree to the{" "}
+                            <Link
+                              href="/terms"
+                              className="text-[#00A6A6] hover:underline"
+                            >
+                              terms and conditions
+                            </Link>
+                          </span>
                         </FormLabel>
-                        <FormMessage />
                       </div>
                     </FormItem>
                   )}
                 />
 
-                <Button
-                  type="submit"
-                  className="w-full bg-[#00A6A6] hover:bg-[#008f8f] text-white"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? "Creating Account..." : "Create Professional Account"}
-                </Button>
+                <div className="space-y-6">
+                  {submitError && <p className="text-red-500 text-center">{submitError}</p>}
+                  {submitSuccess && <p className="text-green-500 text-center">Signup successful! Redirecting...</p>}
+                  <Button
+                    type="submit"
+                    fullWidth
+                    disabled={isSubmitting}
+                    className="bg-[#00A6A6] text-white hover:bg-[#008e8e]"
+                  >
+                    {isSubmitting ? "Submitting..." : "Create Account"}
+                  </Button>
+                </div>
               </form>
             </Form>
-
-            {submitSuccess && (
-              <div className="mt-4 p-4 bg-green-50 border border-green-200 text-green-700 rounded-md flex items-center">
-                <div className="mr-3">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-green-500"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <div>
-                  <p className="font-medium">Professional account created successfully!</p>
-                  <p className="text-sm">Redirecting to dashboard...</p>
-                </div>
-              </div>
-            )}
-
-            {submitError && <div className="mt-4 p-4 bg-red-50 text-red-700 rounded-md">Error: {submitError}</div>}
-
-            <div className="text-center mt-6">
-              <p className="text-[#666666] text-sm">
-                Already have an account?{" "}
-                <Link href="/login" className="text-[#00A6A6] font-medium hover:underline">
-                  Log In
-                </Link>
-              </p>
-            </div>
           </div>
         </div>
       </main>
@@ -373,4 +337,3 @@ export default function WorkerSignupPage() {
     </div>
   )
 }
-

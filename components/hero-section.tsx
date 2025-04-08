@@ -3,6 +3,8 @@ import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import { AnimatedProfession } from "@/components/animated-profession"
+
 
 export function HeroSection() {
   return (
@@ -10,9 +12,12 @@ export function HeroSection() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div className="space-y-8 relative z-10">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[#333333] animate-fade-in">
-              Find Skilled Professionals For Any Job
-            </h1>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[#333333] animate-fade-in flex flex-wrap items-baseline gap-x-2">
+  Find Skilled <AnimatedProfession /> For Any Job
+</h1>
+
+
+
             <p className="text-lg md:text-xl text-[#666666] max-w-md animate-fade-in animation-delay-200">
               Connect with verified mechanics, carpenters, plumbers, electricians and more in your area. Get the job
               done right.
