@@ -36,6 +36,7 @@ export default function ProfessionalDashboardPage() {
   const [myJobs, setMyJobs] = useState<Job[]>([])
   const [availableJobs, setAvailableJobs] = useState<Job[]>([])
   const [loading, setLoading] = useState(true)
+  
 
   useEffect(() => {
     async function fetchData() {

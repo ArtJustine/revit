@@ -61,13 +61,6 @@ export function Header() {
         {/* Desktop navigation */}
         <nav className="hidden md:flex items-center gap-8">
           <Link
-            href="/"
-            className="text-sm font-medium text-[#333333] hover:text-[#00A6A6] transition-colors relative group"
-          >
-            Home
-            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#00A6A6] transition-all duration-300 group-hover:w-full"></span>
-          </Link>
-          <Link
             href="/how-it-works"
             className="text-sm font-medium text-[#333333] hover:text-[#00A6A6] transition-colors relative group"
           >
@@ -98,41 +91,63 @@ export function Header() {
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
-          {user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon" className="rounded-full h-10 w-10 border-[#00A6A6]">
-                  <User className="h-5 w-5 text-[#00A6A6]" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link href={getDashboardLink()}>Dashboard</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href={userData?.userType === "professional" ? "/professional/profile" : "/dashboard/profile"}>
-                    Profile
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href={userData?.userType === "professional" ? "/professional/settings" : "/dashboard/settings"}>
-                    Settings
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleSignOut}>Sign Out</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <>
-              <Button asChild className="bg-[#00A6A6] hover:bg-[#008f8f] text-white rounded-full px-6">
-                <Link href="/signup">Sign Up</Link>
-              </Button>
-            </>
-          )}
-        </div>
+  {user ? (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="outline"
+          size="icon"
+          className="rounded-full h-10 w-10 border-[#00A6A6] transform transition-transform duration-300 hover:scale-105"
+        >
+          <User className="h-5 w-5 text-[#00A6A6]" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          asChild
+          className="transform transition-transform duration-200 hover:scale-105"
+        >
+          <Link href={getDashboardLink()}>Dashboard</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          asChild
+          className="transform transition-transform duration-200 hover:scale-105"
+        >
+          <Link href={userData?.userType === "professional" ? "/professional/profile" : "/dashboard/profile"}>
+            Profile
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          asChild
+          className="transform transition-transform duration-200 hover:scale-105"
+        >
+          <Link href={userData?.userType === "professional" ? "/professional/settings" : "/dashboard/settings"}>
+            Settings
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          onClick={handleSignOut}
+          className="transform transition-transform duration-200 hover:scale-105 cursor-pointer"
+        >
+          Sign Out
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  ) : (
+    <>
+      <Button
+        asChild
+        className="bg-[#00A6A6] hover:bg-[#008f8f] text-white rounded-full px-6 transform transition-transform duration-300 hover:scale-105"
+      >
+        <Link href="/signup">Sign Up</Link>
+      </Button>
+    </>
+  )}
+</div>
+
 
         {/* Mobile navigation */}
         <Sheet>

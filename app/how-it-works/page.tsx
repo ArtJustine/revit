@@ -36,7 +36,7 @@ export default function HowItWorksPage() {
               </div>
               <div className="relative h-[300px] rounded-xl overflow-hidden">
                 <Image
-                  src="/placeholder.svg?height=300&width=500"
+                  src="/philippine-workers.webp?height=300&width=500"
                   alt="How Revit works"
                   fill
                   className="object-cover"
@@ -59,17 +59,17 @@ export default function HowItWorksPage() {
             </AnimatedSection>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
-              <AnimatedSection animation="slide-in-left">
-                <div className="relative h-[300px] md:h-[400px] rounded-xl overflow-hidden">
-                  <Image
-                    src="/placeholder.svg?height=400&width=600"
-                    alt="Post a job"
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                </div>
-              </AnimatedSection>
+            <AnimatedSection animation="slide-in-left">
+              <div className="relative h-[300px] md:h-[400px] rounded-xl overflow-hidden mt-10"> {/* ← Add mt-10 or more */}
+                <Image
+                  src="/post-your-job.webp?height=400&width=600"
+                  alt="Post a job"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </div>
+            </AnimatedSection>
 
               <AnimatedSection animation="slide-in-right">
                 <div className="space-y-6 relative z-10">
@@ -130,7 +130,7 @@ export default function HowItWorksPage() {
               <AnimatedSection animation="slide-in-left" className="order-1 md:order-2">
                 <div className="relative h-[300px] md:h-[400px] rounded-xl overflow-hidden">
                   <Image
-                    src="/placeholder.svg?height=400&width=600"
+                    src="/compare-professionals.webp?height=400&width=600"
                     alt="Compare professionals"
                     fill
                     className="object-cover"
@@ -143,7 +143,7 @@ export default function HowItWorksPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
               <AnimatedSection animation="slide-in-left">
                 <div className="relative h-[300px] md:h-[400px] rounded-xl overflow-hidden">
-                  <Image src="/placeholder.svg?height=400&width=600" alt="Hire and pay" fill className="object-cover" />
+                  <Image src="/hire.webp?height=400&width=600" alt="Hire and pay" fill className="object-cover" />
                 </div>
               </AnimatedSection>
 
@@ -206,7 +206,7 @@ export default function HowItWorksPage() {
               <AnimatedSection animation="slide-in-left" className="order-1 md:order-2">
                 <div className="relative h-[300px] md:h-[400px] rounded-xl overflow-hidden">
                   <Image
-                    src="/placeholder.svg?height=400&width=600"
+                    src="/review.webp?height=400&width=600"
                     alt="Leave a review"
                     fill
                     className="object-cover"
@@ -306,12 +306,14 @@ export default function HowItWorksPage() {
         </section>
 
         {/* Platform features section - Add more bottom padding */}
-        <section className="py-16 px-4 md:px-6 pb-24">
+        <section className="py-16 px-4 md:px-6 pb-24 bg-cover bg-center bg-no-repeat"
+  style={{ backgroundImage: "url('/platform-features.webp')" }}
+>
           <div className="container mx-auto">
             <AnimatedSection animation="fade-up">
               <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-[#333333] mb-4">Platform Features</h2>
-                <p className="text-lg text-[#666666] max-w-2xl mx-auto">
+                <h2 className="text-3xl font-bold text-[#ffffff] mb-4">Platform Features</h2>
+                <p className="text-lg text-[#ffffff] max-w-2xl mx-auto">
                   Revit offers a comprehensive set of tools to make the service experience seamless
                 </p>
               </div>
