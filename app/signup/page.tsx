@@ -22,7 +22,7 @@ export default function SignupPage() {
               <div className="bg-[#E0E0E0] rounded-xl p-8 text-center hover:shadow-md transition-all">
                 <div className="mb-6 relative h-48 w-48 mx-auto">
                   <Image
-                    src="/placeholder.svg?height=200&width=200"
+                    src="/client.webp?height=200&width=200"
                     alt="Client"
                     fill
                     className="object-cover rounded-full"
@@ -42,7 +42,7 @@ export default function SignupPage() {
               <div className="bg-[#E0E0E0] rounded-xl p-8 text-center hover:shadow-md transition-all">
                 <div className="mb-6 relative h-48 w-48 mx-auto">
                   <Image
-                    src="/placeholder.svg?height=200&width=200"
+                    src="/professional.webp?height=200&width=200"
                     alt="Professional"
                     fill
                     className="object-cover rounded-full"
