@@ -9,7 +9,9 @@ import {
   where,
   orderBy,
   serverTimestamp,
+  limit,
   type Timestamp,
+  type DocumentData,
 } from "firebase/firestore"
 import { db } from "./config"
 
@@ -28,17 +30,47 @@ export interface Job {
   updatedAt?: Timestamp
 }
 
+// User profile type definition
+export interface UserProfile {
+  id?: string
+  uid: string
+  email: string
+  firstName: string
+  lastName: string
+  displayName: string
+  userType: string
+  profession?: string
+  rating?: number
+  completedJobs?: number
+  profileImage?: string
+  createdAt?: Timestamp
+}
+
+/**
+ * Helper function to convert Firestore document to typed object with ID
+ */
+function convertDoc<T extends DocumentData>(doc: DocumentData): T {
+  return {
+    id: doc.id,
+    ...doc.data(),
+  } as T
+}
+
 /**
  * Create a new job in Firestore
  * @param jobData Job data to create
- * @returns Promise with the job ID
+ * @returns Promise with the complete job object including ID
  */
 export async function createJob(jobData: Omit<Job, "id" | "createdAt" | "updatedAt">) {
   try {
+    console.log("Creating job with data:", jobData)
+
     // Ensure status is set to "open" if not provided
+    // Normalize category to lowercase for consistent matching
     const jobWithDefaults = {
       ...jobData,
       status: jobData.status || "open",
+      category: jobData.category?.toLowerCase() || "other",
     }
 
     // Add timestamps
@@ -52,7 +84,7 @@ export async function createJob(jobData: Omit<Job, "id" | "createdAt" | "updated
     const docRef = await addDoc(collection(db, "jobs"), jobWithTimestamps)
     console.log("Job created with ID:", docRef.id)
 
-    // Return both the ID and the complete job data
+    // Return the complete job object with ID
     return {
       id: docRef.id,
       ...jobWithDefaults,
@@ -78,10 +110,7 @@ export async function getJobById(jobId: string) {
       throw new Error("Job not found")
     }
 
-    return {
-      id: jobDoc.id,
-      ...jobDoc.data(),
-    } as Job
+    return convertDoc<Job>(jobDoc)
   } catch (error) {
     console.error("Error getting job:", error)
     throw error
@@ -95,6 +124,8 @@ export async function getJobById(jobId: string) {
  */
 export async function getJobsByProfessional(professionalId: string) {
   try {
+    console.log(`Fetching jobs for professional: ${professionalId}`)
+
     const jobsQuery = query(
       collection(db, "jobs"),
       where("professionalId", "==", professionalId),
@@ -105,12 +136,10 @@ export async function getJobsByProfessional(professionalId: string) {
     const jobs: Job[] = []
 
     querySnapshot.forEach((doc) => {
-      jobs.push({
-        id: doc.id,
-        ...doc.data(),
-      } as Job)
+      jobs.push(convertDoc<Job>(doc))
     })
 
+    console.log(`Found ${jobs.length} jobs for professional ${professionalId}`)
     return jobs
   } catch (error) {
     console.error("Error getting professional jobs:", error)
@@ -121,12 +150,11 @@ export async function getJobsByProfessional(professionalId: string) {
 /**
  * Get jobs created by a client
  * @param clientId Client ID to fetch jobs for
- * @param timestamp Optional timestamp to force cache refresh
  * @returns Promise with an array of jobs
  */
-export async function getJobsByClient(clientId: string, timestamp?: number) {
+export async function getJobsByClient(clientId: string) {
   try {
-    console.log(`Fetching jobs for client ${clientId} at ${timestamp || "no timestamp"}`)
+    console.log(`Fetching jobs for client: ${clientId}`)
 
     const jobsQuery = query(collection(db, "jobs"), where("clientId", "==", clientId), orderBy("createdAt", "desc"))
 
@@ -134,13 +162,9 @@ export async function getJobsByClient(clientId: string, timestamp?: number) {
     const jobs: Job[] = []
 
     querySnapshot.forEach((doc) => {
-      const jobData = doc.data()
-      console.log(`Job ${doc.id} status: ${jobData.status}`)
-
-      jobs.push({
-        id: doc.id,
-        ...jobData,
-      } as Job)
+      const job = convertDoc<Job>(doc)
+      console.log(`Found job: ${job.id}, title: ${job.title}, status: ${job.status}`)
+      jobs.push(job)
     })
 
     console.log(`Found ${jobs.length} jobs for client ${clientId}`)
@@ -157,21 +181,68 @@ export async function getJobsByClient(clientId: string, timestamp?: number) {
  */
 export async function getAvailableJobs() {
   try {
+    console.log("Fetching all available jobs")
+
     const jobsQuery = query(collection(db, "jobs"), where("status", "==", "open"), orderBy("createdAt", "desc"))
 
     const querySnapshot = await getDocs(jobsQuery)
     const jobs: Job[] = []
 
     querySnapshot.forEach((doc) => {
-      jobs.push({
-        id: doc.id,
-        ...doc.data(),
-      } as Job)
+      const job = convertDoc<Job>(doc)
+      console.log(`Found available job: ${job.id}, title: ${job.title}, category: ${job.category}`)
+      jobs.push(job)
     })
 
+    console.log(`Found ${jobs.length} available jobs`)
     return jobs
   } catch (error) {
     console.error("Error getting available jobs:", error)
+    throw error
+  }
+}
+
+/**
+ * Get jobs that match a professional's category
+ * @param professionalId Professional ID to match jobs for
+ * @returns Promise with an array of matching jobs
+ */
+export async function getMatchingJobs(professionalId: string) {
+  try {
+    console.log(`Finding matching jobs for professional: ${professionalId}`)
+
+    // First get the professional's profile to determine their category
+    const userDoc = await getDoc(doc(db, "users", professionalId))
+
+    if (!userDoc.exists()) {
+      console.log(`Professional profile not found for ID: ${professionalId}`)
+      return []
+    }
+
+    const userData = userDoc.data()
+    const profession = userData.profession?.toLowerCase()
+
+    if (!profession) {
+      console.log(`No profession set for professional ID: ${professionalId}`)
+      return []
+    }
+
+    console.log(`Professional's profession: ${profession}`)
+
+    // Get all available jobs
+    const allAvailableJobs = await getAvailableJobs()
+
+    // Filter jobs that match the professional's category
+    const matchingJobs = allAvailableJobs.filter((job) => {
+      const isMatch = job.category?.toLowerCase() === profession
+      console.log(`Job ${job.id} category: ${job.category}, matches profession ${profession}: ${isMatch}`)
+      return isMatch
+    })
+
+    console.log(`Found ${matchingJobs.length} matching jobs for profession: ${profession}`)
+    return matchingJobs
+  } catch (error) {
+    console.error("Error getting matching jobs:", error)
     throw error
   }
 }
@@ -237,6 +308,77 @@ export async function updateJobStatus(
     return true
   } catch (error) {
     console.error("Error updating job status:", error)
+    throw error
+  }
+}
+
+/**
+ * Get user profile by ID
+ * @param userId User ID to fetch
+ * @returns Promise with the user profile data
+ */
+export async function getUserProfile(userId: string) {
+  try {
+    const userDoc = await getDoc(doc(db, "users", userId))
+
+    if (!userDoc.exists()) {
+      throw new Error("User profile not found")
+    }
+
+    return convertDoc<UserProfile>(userDoc)
+  } catch (error) {
+    console.error("Error getting user profile:", error)
+    throw error
+  }
+}
+
+/**
+ * Update user profile
+ * @param userId User ID to update
+ * @param profileData Profile data to update
+ * @returns Promise that resolves when the update is complete
+ */
+export async function updateUserProfile(userId: string, profileData: Partial<Omit<UserProfile, "id" | "uid">>) {
+  try {
+    // Add updatedAt timestamp
+    const dataWithTimestamp = {
+      ...profileData,
+      updatedAt: serverTimestamp(),
+    }
+
+    await updateDoc(doc(db, "users", userId), dataWithTimestamp)
+    console.log("User profile updated successfully:", userId)
+
+    return true
+  } catch (error) {
+    console.error("Error updating user profile:", error)
+    throw error
+  }
+}
+
+/**
+ * Get featured professionals
+ * @param limitCount Number of professionals to fetch
+ * @returns Promise with an array of professional profiles
+ */
+export async function getFeaturedProfessionals(limitCount = 4) {
+  try {
+    const professionalsQuery = query(
+      collection(db, "users"),
+      where("userType", "==", "professional"),
+      limit(limitCount),
+    )
+
+    const querySnapshot = await getDocs(professionalsQuery)
+    const professionals: UserProfile[] = []
+
+    querySnapshot.forEach((doc) => {
+      professionals.push(convertDoc<UserProfile>(doc))
+    })
+
+    return professionals
+  } catch (error) {
+    console.error("Error getting featured professionals:", error)
     throw error
   }
 }

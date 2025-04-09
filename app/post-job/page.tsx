@@ -68,13 +68,14 @@ export default function PostJobPage() {
       const jobData = {
         title: values.title,
         description: values.description,
-        category: values.category,
+        category: values.category.toLowerCase(), // Ensure category is lowercase
         budget: Number.parseFloat(values.budget),
         location: values.location,
         clientId: user.uid,
         status: "open",
       }
 
+      console.log("Creating job with data:", jobData)
       const jobId = await createJob(jobData)
       console.log("Job created with ID:", jobId)
 
@@ -272,4 +273,3 @@ export default function PostJobPage() {
     </ProtectedRoute>
   )
 }
-

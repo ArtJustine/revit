@@ -28,13 +28,14 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ProtectedRoute } from "@/components/protected-route"
 import { useAuth } from "@/lib/firebase/auth-context"
-import { getJobsByProfessional, getAvailableJobs, type Job } from "@/lib/firebase/utils"
+import { getJobsByProfessional, getAvailableJobs, getMatchingJobs, type Job } from "@/lib/firebase/utils"
 
 export default function ProfessionalDashboardPage() {
   const { user, userData, signOut } = useAuth()
   const router = useRouter()
   const [myJobs, setMyJobs] = useState<Job[]>([])
   const [availableJobs, setAvailableJobs] = useState<Job[]>([])
+  const [matchingJobs, setMatchingJobs] = useState<Job[]>([])
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState("my-jobs")
 
@@ -45,20 +46,33 @@ export default function ProfessionalDashboardPage() {
         setLoading(true)
         console.log("Fetching professional dashboard data...")
 
-        const [myJobsData, availableJobsData] = await Promise.all([getJobsByProfessional(user.uid), getAvailableJobs()])
-
+        // Get jobs assigned to this professional
+        const myJobsData = await getJobsByProfessional(user.uid)
         console.log("My jobs:", myJobsData)
-        console.log("Available jobs:", availableJobsData)
-
         setMyJobs(myJobsData as Job[])
-        setAvailableJobs(availableJobsData as Job[])
+
+        // Get all available jobs
+        const allAvailableJobs = await getAvailableJobs()
+        console.log("All available jobs:", allAvailableJobs)
+        setAvailableJobs(allAvailableJobs as Job[])
+
+        // Get jobs that match this professional's category
+        if (userData?.profession) {
+          console.log("Professional profession:", userData.profession)
+          const matchingJobsData = await getMatchingJobs(user.uid)
+          console.log("Matching jobs:", matchingJobsData)
+          setMatchingJobs(matchingJobsData as Job[])
+        } else {
+          console.log("No profession set for this professional")
+          setMatchingJobs([])
+        }
       } catch (error) {
         console.error("Error fetching dashboard data:", error)
       } finally {
         setLoading(false)
       }
     }
-  }, [user])
+  }, [user, userData?.profession])
 
   // Fetch data on initial load
   useEffect(() => {
@@ -163,22 +177,11 @@ export default function ProfessionalDashboardPage() {
     return myJobs.filter((job) => job.status === "completed").reduce((total, job) => total + (job.budget || 0), 0)
   }
 
-  // Filter available jobs that match the professional's category
-  const matchingJobs = availableJobs.filter((job) => {
-    // If userData.profession is undefined, show all jobs
-    if (!userData?.profession) return true
-
-    // Convert both to lowercase for case-insensitive comparison
-    const jobCategory = job.category?.toLowerCase()
-    const userProfession = userData.profession.toLowerCase()
-
-    // For debugging
-    console.log(
-      `Job category: ${jobCategory}, User profession: ${userProfession}, Match: ${jobCategory === userProfession}`,
-    )
-
-    return jobCategory === userProfession
-  })
+  // Check if a job matches the professional's profession
+  const isMatchingJob = (job: Job) => {
+    if (!userData?.profession) return false
+    return job.category?.toLowerCase() === userData.profession.toLowerCase()
+  }
 
   return (
     <ProtectedRoute requiredUserType="professional">
@@ -197,6 +200,11 @@ export default function ProfessionalDashboardPage() {
                   Welcome, {userData?.firstName || user?.displayName?.split(" ")[0] || "Professional"}
                 </h1>
                 <p className="text-[#666666]">Manage your jobs and find new opportunities</p>
+                {userData?.profession && (
+                  <p className="text-[#00A6A6] font-medium mt-1">
+                    Your profession: <span className="capitalize">{userData.profession}</span>
+                  </p>
+                )}
               </div>
               <div className="mt-4 md:mt-0 flex gap-4">
                 <Button asChild className="bg-[#00A6A6] hover:bg-[#008f8f] text-white">
@@ -286,6 +294,12 @@ export default function ProfessionalDashboardPage() {
                         <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
                       </div>
                     </div>
+                    {userData?.profession && (
+                      <div className="flex justify-between items-center">
+                        <span className="text-[#666666]">Matching Jobs</span>
+                        <span className="font-bold text-[#333333]">{matchingJobs.length}</span>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </motion.div>
@@ -378,10 +392,18 @@ export default function ProfessionalDashboardPage() {
                   </TabsContent>
 
                   <TabsContent value="available">
-                    <div className="mb-4">
+                    <div className="mb-4 flex justify-between items-center">
                       <Button onClick={fetchData} variant="outline" className="border-[#00A6A6] text-[#00A6A6]">
                         <Search className="mr-2 h-4 w-4" /> Refresh Available Jobs
                       </Button>
+
+                      {userData?.profession && (
+                        <div className="text-sm text-[#666666]">
+                          <span className="font-medium">Your profession:</span>{" "}
+                          <span className="capitalize">{userData.profession}</span>
+                          <span className="ml-1 text-xs">(Matching jobs are highlighted)</span>
+                        </div>
+                      )}
                     </div>
 
                     {loading ? (
@@ -396,74 +418,113 @@ export default function ProfessionalDashboardPage() {
                           <p className="text-[#666666] text-center mb-6">
                             There are no available jobs at the moment. Check back later for new opportunities.
                           </p>
-                          {userData?.profession && (
-                            <p className="text-[#666666] text-center">
-                              Your profession: {userData.profession} (Looking for jobs in this category)
-                            </p>
-                          )}
                         </CardContent>
                       </Card>
                     ) : (
                       <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-4">
-                        {/* Show all available jobs */}
-                        {availableJobs.map((job) => (
-                          <motion.div key={job.id} variants={itemVariants}>
-                            <Card
-                              className={`hover:shadow-md transition-shadow ${
-                                job.category?.toLowerCase() === userData?.profession?.toLowerCase()
-                                  ? "border-[#00A6A6] border-2"
-                                  : ""
-                              }`}
-                            >
-                              <CardHeader className="pb-2">
-                                <div className="flex justify-between items-start">
-                                  <div>
-                                    <CardTitle>{job.title}</CardTitle>
-                                    <CardDescription>
-                                      Posted on{" "}
-                                      {job.createdAt
-                                        ? new Date(job.createdAt.seconds * 1000).toLocaleDateString()
-                                        : "Recently"}
-                                    </CardDescription>
-                                  </div>
-                                  <div className="px-3 py-1 rounded-full flex items-center bg-blue-100 text-blue-800">
-                                    <Search className="h-4 w-4" />
-                                    <span className="ml-1 text-xs font-medium">Open</span>
-                                  </div>
-                                </div>
-                              </CardHeader>
-                              <CardContent>
-                                <p className="text-[#666666] line-clamp-2 mb-2">{job.description}</p>
-                                <div className="flex flex-wrap gap-2 mt-2">
-                                  <div className="bg-gray-100 px-2 py-1 rounded-md text-xs text-[#666666]">
-                                    Budget: ${job.budget}
-                                  </div>
-                                  <div
-                                    className={`px-2 py-1 rounded-md text-xs capitalize ${
-                                      job.category?.toLowerCase() === userData?.profession?.toLowerCase()
-                                        ? "bg-[#00A6A6]/20 text-[#00A6A6] font-medium"
-                                        : "bg-gray-100 text-[#666666]"
-                                    }`}
-                                  >
-                                    Category: {job.category}
-                                    {job.category?.toLowerCase() === userData?.profession?.toLowerCase() &&
-                                      " (Matches your profession)"}
-                                  </div>
-                                  <div className="bg-gray-100 px-2 py-1 rounded-md text-xs text-[#666666]">
-                                    Location: {job.location}
-                                  </div>
-                                </div>
-                              </CardContent>
-                              <CardFooter className="border-t pt-4">
-                                <Button asChild className="w-full bg-[#00A6A6] hover:bg-[#008f8f] text-white">
-                                  <Link href={`/jobs/${job.id}`}>
-                                    View & Apply <ChevronRight className="ml-2 h-4 w-4" />
-                                  </Link>
-                                </Button>
-                              </CardFooter>
-                            </Card>
-                          </motion.div>
-                        ))}
+                        {/* First show matching jobs */}
+                        {matchingJobs.length > 0 && (
+                          <div className="mb-4">
+                            <h3 className="text-xl font-bold text-[#333333] mb-4">Jobs Matching Your Profession</h3>
+                            {matchingJobs.map((job) => (
+                              <motion.div key={job.id} variants={itemVariants} className="mb-4">
+                                <Card className="hover:shadow-md transition-shadow border-[#00A6A6] border-2">
+                                  <CardHeader className="pb-2">
+                                    <div className="flex justify-between items-start">
+                                      <div>
+                                        <CardTitle>{job.title}</CardTitle>
+                                        <CardDescription>
+                                          Posted on{" "}
+                                          {job.createdAt
+                                            ? new Date(job.createdAt.seconds * 1000).toLocaleDateString()
+                                            : "Recently"}
+                                        </CardDescription>
+                                      </div>
+                                      <div className="px-3 py-1 rounded-full flex items-center bg-blue-100 text-blue-800">
+                                        <Search className="h-4 w-4" />
+                                        <span className="ml-1 text-xs font-medium">Open</span>
+                                      </div>
+                                    </div>
+                                  </CardHeader>
+                                  <CardContent>
+                                    <p className="text-[#666666] line-clamp-2 mb-2">{job.description}</p>
+                                    <div className="flex flex-wrap gap-2 mt-2">
+                                      <div className="bg-gray-100 px-2 py-1 rounded-md text-xs text-[#666666]">
+                                        Budget: ${job.budget}
+                                      </div>
+                                      <div className="bg-[#00A6A6]/20 px-2 py-1 rounded-md text-xs text-[#00A6A6] font-medium capitalize">
+                                        Category: {job.category} (Matches your profession)
+                                      </div>
+                                      <div className="bg-gray-100 px-2 py-1 rounded-md text-xs text-[#666666]">
+                                        Location: {job.location}
+                                      </div>
+                                    </div>
+                                  </CardContent>
+                                  <CardFooter className="border-t pt-4">
+                                    <Button asChild className="w-full bg-[#00A6A6] hover:bg-[#008f8f] text-white">
+                                      <Link href={`/jobs/${job.id}`}>
+                                        View & Apply <ChevronRight className="ml-2 h-4 w-4" />
+                                      </Link>
+                                    </Button>
+                                  </CardFooter>
+                                </Card>
+                              </motion.div>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Then show other available jobs */}
+                        <div>
+                          <h3 className="text-xl font-bold text-[#333333] mb-4">
+                            {matchingJobs.length > 0 ? "Other Available Jobs" : "Available Jobs"}
+                          </h3>
+                          {availableJobs
+                            .filter((job) => !matchingJobs.some((matchingJob) => matchingJob.id === job.id))
+                            .map((job) => (
+                              <motion.div key={job.id} variants={itemVariants} className="mb-4">
+                                <Card className="hover:shadow-md transition-shadow">
+                                  <CardHeader className="pb-2">
+                                    <div className="flex justify-between items-start">
+                                      <div>
+                                        <CardTitle>{job.title}</CardTitle>
+                                        <CardDescription>
+                                          Posted on{" "}
+                                          {job.createdAt
+                                            ? new Date(job.createdAt.seconds * 1000).toLocaleDateString()
+                                            : "Recently"}
+                                        </CardDescription>
+                                      </div>
+                                      <div className="px-3 py-1 rounded-full flex items-center bg-blue-100 text-blue-800">
+                                        <Search className="h-4 w-4" />
+                                        <span className="ml-1 text-xs font-medium">Open</span>
+                                      </div>
+                                    </div>
+                                  </CardHeader>
+                                  <CardContent>
+                                    <p className="text-[#666666] line-clamp-2 mb-2">{job.description}</p>
+                                    <div className="flex flex-wrap gap-2 mt-2">
+                                      <div className="bg-gray-100 px-2 py-1 rounded-md text-xs text-[#666666]">
+                                        Budget: ${job.budget}
+                                      </div>
+                                      <div className="bg-gray-100 px-2 py-1 rounded-md text-xs text-[#666666] capitalize">
+                                        Category: {job.category}
+                                      </div>
+                                      <div className="bg-gray-100 px-2 py-1 rounded-md text-xs text-[#666666]">
+                                        Location: {job.location}
+                                      </div>
+                                    </div>
+                                  </CardContent>
+                                  <CardFooter className="border-t pt-4">
+                                    <Button asChild className="w-full bg-[#00A6A6] hover:bg-[#008f8f] text-white">
+                                      <Link href={`/jobs/${job.id}`}>
+                                        View & Apply <ChevronRight className="ml-2 h-4 w-4" />
+                                      </Link>
+                                    </Button>
+                                  </CardFooter>
+                                </Card>
+                              </motion.div>
+                            ))}
+                        </div>
                       </motion.div>
                     )}
                   </TabsContent>
@@ -505,7 +566,9 @@ export default function ProfessionalDashboardPage() {
                                           : "Recently"}
                                       </CardDescription>
                                     </div>
-                                    <div className="px-3 py-1 rounded-full flex items-center bg-green-100 text-green-800">
+                                    <div
+                                      className={`px-3 py-1 rounded-full flex items-center ${getStatusColor(job.status)}`}
+                                    >
                                       <CheckCircle className="h-4 w-4" />
                                       <span className="ml-1 text-xs font-medium">Completed</span>
                                     </div>
@@ -574,14 +637,8 @@ export default function ProfessionalDashboardPage() {
                           <p className="text-sm text-[#666666]">In Progress</p>
                         </div>
                         <div className="bg-[#E0E0E0] p-4 rounded-lg">
-                          <p className="text-lg font-bold text-[#333333]">
-                            {
-                              availableJobs.filter(
-                                (job) => job.category?.toLowerCase() === userData?.profession?.toLowerCase(),
-                              ).length
-                            }
-                          </p>
-                          <p className="text-sm text-[#666666]">Available</p>
+                          <p className="text-lg font-bold text-[#333333]">{matchingJobs.length}</p>
+                          <p className="text-sm text-[#666666]">Matching Jobs</p>
                         </div>
                       </div>
                     </CardContent>

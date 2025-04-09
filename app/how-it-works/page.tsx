@@ -47,181 +47,190 @@ export default function HowItWorksPage() {
         </section>
 
         {/* For Clients section */}
-        <section className="py-16 px-4 md:px-6">
-          <div className="container mx-auto">
-            <AnimatedSection animation="fade-up">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-[#333333] mb-4">For Clients</h2>
-                <p className="text-lg text-[#666666] max-w-2xl mx-auto">
-                  Finding the right professional for your job is simple with Revit
-                </p>
-              </div>
-            </AnimatedSection>
+<section className="py-8 sm:py-16 px-4 md:px-6">
+  <div className="container mx-auto">
+    <AnimatedSection animation="fade-up">
+      <div className="text-center mb-8 sm:mb-12">
+        <h2 className="text-2xl sm:text-3xl font-bold text-[#333333] mb-3 sm:mb-4">For Clients</h2>
+        <p className="text-base sm:text-lg text-[#666666] max-w-2xl mx-auto">
+          Finding the right professional for your job is simple with Revit
+        </p>
+      </div>
+    </AnimatedSection>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
-            <AnimatedSection animation="slide-in-left">
-              <div className="relative h-[300px] md:h-[400px] rounded-xl overflow-hidden mt-10"> {/* ← Add mt-10 or more */}
-                <Image
-                  src="/post-your-job.webp?height=400&width=600"
-                  alt="Post a job"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-              </div>
-            </AnimatedSection>
-
-              <AnimatedSection animation="slide-in-right">
-                <div className="space-y-6 relative z-10">
-                  <div className="bg-[#00A6A6] h-12 w-12 rounded-full flex items-center justify-center text-white font-bold">
-                    1
-                  </div>
-                  <h3 className="text-2xl font-bold text-[#333333]">Post Your Job</h3>
-                  <p className="text-[#666666]">
-                    Describe what you need done, when you need it, and your location. Be as specific as possible to
-                    attract the right professionals.
-                  </p>
-                  <ul className="space-y-2">
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="h-5 w-5 text-[#00A6A6] mt-0.5 flex-shrink-0" />
-                      <span className="text-[#666666]">Specify the type of service you need</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="h-5 w-5 text-[#00A6A6] mt-0.5 flex-shrink-0" />
-                      <span className="text-[#666666]">Set your budget range</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="h-5 w-5 text-[#00A6A6] mt-0.5 flex-shrink-0" />
-                      <span className="text-[#666666]">Choose your preferred timeline</span>
-                    </li>
-                  </ul>
-                </div>
-              </AnimatedSection>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
-              <AnimatedSection animation="slide-in-right" className="order-2 md:order-1">
-                <div className="space-y-6 relative z-10">
-                  <div className="bg-[#00A6A6] h-12 w-12 rounded-full flex items-center justify-center text-white font-bold">
-                    2
-                  </div>
-                  <h3 className="text-2xl font-bold text-[#333333]">Compare Professionals</h3>
-                  <p className="text-[#666666]">
-                    Browse profiles, reviews, and quotes from interested professionals. Our verification system ensures
-                    you're only dealing with qualified experts.
-                  </p>
-                  <ul className="space-y-2">
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="h-5 w-5 text-[#00A6A6] mt-0.5 flex-shrink-0" />
-                      <span className="text-[#666666]">View detailed professional profiles</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="h-5 w-5 text-[#00A6A6] mt-0.5 flex-shrink-0" />
-                      <span className="text-[#666666]">Read verified customer reviews</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="h-5 w-5 text-[#00A6A6] mt-0.5 flex-shrink-0" />
-                      <span className="text-[#666666]">Compare quotes and timelines</span>
-                    </li>
-                  </ul>
-                </div>
-              </AnimatedSection>
-
-              <AnimatedSection animation="slide-in-left" className="order-1 md:order-2">
-                <div className="relative h-[300px] md:h-[400px] rounded-xl overflow-hidden">
-                  <Image
-                    src="/compare-professionals.webp?height=400&width=600"
-                    alt="Compare professionals"
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                </div>
-              </AnimatedSection>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
-              <AnimatedSection animation="slide-in-left">
-                <div className="relative h-[300px] md:h-[400px] rounded-xl overflow-hidden">
-                  <Image src="/hire.webp?height=400&width=600" alt="Hire and pay" fill className="object-cover" />
-                </div>
-              </AnimatedSection>
-
-              <AnimatedSection animation="slide-in-right">
-                <div className="space-y-6 relative z-10">
-                  <div className="bg-[#00A6A6] h-12 w-12 rounded-full flex items-center justify-center text-white font-bold">
-                    3
-                  </div>
-                  <h3 className="text-2xl font-bold text-[#333333]">Hire & Pay Securely</h3>
-                  <p className="text-[#666666]">
-                    Choose the right professional and pay securely through our platform. Your payment is held in escrow
-                    until the job is completed to your satisfaction.
-                  </p>
-                  <ul className="space-y-2">
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="h-5 w-5 text-[#00A6A6] mt-0.5 flex-shrink-0" />
-                      <span className="text-[#666666]">Secure payment protection</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="h-5 w-5 text-[#00A6A6] mt-0.5 flex-shrink-0" />
-                      <span className="text-[#666666]">Only pay when you're satisfied</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="h-5 w-5 text-[#00A6A6] mt-0.5 flex-shrink-0" />
-                      <span className="text-[#666666]">Multiple payment options available</span>
-                    </li>
-                  </ul>
-                </div>
-              </AnimatedSection>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-              <AnimatedSection animation="slide-in-right" className="order-2 md:order-1">
-                <div className="space-y-6 relative z-10">
-                  <div className="bg-[#00A6A6] h-12 w-12 rounded-full flex items-center justify-center text-white font-bold">
-                    4
-                  </div>
-                  <h3 className="text-2xl font-bold text-[#333333]">Leave a Review</h3>
-                  <p className="text-[#666666]">
-                    After the job is complete, share your experience to help other clients find great professionals.
-                    Your feedback helps maintain our high-quality standards.
-                  </p>
-                  <ul className="space-y-2">
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="h-5 w-5 text-[#00A6A6] mt-0.5 flex-shrink-0" />
-                      <span className="text-[#666666]">Rate your experience</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="h-5 w-5 text-[#00A6A6] mt-0.5 flex-shrink-0" />
-                      <span className="text-[#666666]">Share detailed feedback</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="h-5 w-5 text-[#00A6A6] mt-0.5 flex-shrink-0" />
-                      <span className="text-[#666666]">Help other clients make informed decisions</span>
-                    </li>
-                  </ul>
-                </div>
-              </AnimatedSection>
-
-              <AnimatedSection animation="slide-in-left" className="order-1 md:order-2">
-                <div className="relative h-[300px] md:h-[400px] rounded-xl overflow-hidden">
-                  <Image
-                    src="/review.webp?height=400&width=600"
-                    alt="Leave a review"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              </AnimatedSection>
-            </div>
-
-            <div className="text-center mt-12">
-              <Button asChild className="bg-[#00A6A6] hover:bg-[#008f8f] text-white">
-                <Link href="/client-benefits">Learn More About Client Benefits</Link>
-              </Button>
-            </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 items-center mb-12 sm:mb-16">
+      <AnimatedSection animation="slide-in-left">
+        <div className="pt-16 sm:pt-20 md:pt-24 lg:pt-20">
+          <div className="relative h-[250px] sm:h-[300px] md:h-[400px] rounded-xl overflow-hidden mb-6 md:mb-0"> 
+            <Image
+              src="/post-your-job.webp?height=400&width=600"
+              alt="Post a job"
+              fill
+              className="object-cover"
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, 50vw"
+            />
           </div>
-        </section>
+        </div>
+      </AnimatedSection>
+
+      <AnimatedSection animation="slide-in-right">
+        <div className="space-y-4 sm:space-y-6 relative z-10 text-center md:text-left px-8 sm:px-12 md:px-0">
+          <div className="bg-[#00A6A6] h-10 w-10 sm:h-12 sm:w-12 rounded-full flex items-center justify-center text-white font-bold mx-auto md:mx-0">
+            1
+          </div>
+          <h3 className="text-xl sm:text-2xl font-bold text-[#333333]">Post Your Job</h3>
+          <p className="text-sm sm:text-base text-[#666666]">
+            Describe what you need done, when you need it, and your location. Be as specific as possible to
+            attract the right professionals.
+          </p>
+          <ul className="space-y-2 inline-block text-left">
+            <li className="flex items-start gap-2">
+              <CheckCircle className="h-5 w-5 text-[#00A6A6] mt-0.5 flex-shrink-0" />
+              <span className="text-sm sm:text-base text-[#666666]">Specify the type of service you need</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle className="h-5 w-5 text-[#00A6A6] mt-0.5 flex-shrink-0" />
+              <span className="text-sm sm:text-base text-[#666666]">Set your budget range</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle className="h-5 w-5 text-[#00A6A6] mt-0.5 flex-shrink-0" />
+              <span className="text-sm sm:text-base text-[#666666]">Choose your preferred timeline</span>
+            </li>
+          </ul>
+        </div>
+      </AnimatedSection>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 items-center mb-12 sm:mb-16">
+      <AnimatedSection animation="slide-in-right" className="order-2 md:order-1">
+        <div className="space-y-4 sm:space-y-6 relative z-10 text-center md:text-left px-8 sm:px-12 md:px-0">
+          <div className="bg-[#00A6A6] h-10 w-10 sm:h-12 sm:w-12 rounded-full flex items-center justify-center text-white font-bold mx-auto md:mx-0">
+            2
+          </div>
+          <h3 className="text-xl sm:text-2xl font-bold text-[#333333]">Compare Professionals</h3>
+          <p className="text-sm sm:text-base text-[#666666]">
+            Browse profiles, reviews, and quotes from interested professionals. Our verification system ensures
+            you're only dealing with qualified experts.
+          </p>
+          <ul className="space-y-2 inline-block text-left">
+            <li className="flex items-start gap-2">
+              <CheckCircle className="h-5 w-5 text-[#00A6A6] mt-0.5 flex-shrink-0" />
+              <span className="text-sm sm:text-base text-[#666666]">View detailed professional profiles</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle className="h-5 w-5 text-[#00A6A6] mt-0.5 flex-shrink-0" />
+              <span className="text-sm sm:text-base text-[#666666]">Read verified customer reviews</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle className="h-5 w-5 text-[#00A6A6] mt-0.5 flex-shrink-0" />
+              <span className="text-sm sm:text-base text-[#666666]">Compare quotes and timelines</span>
+            </li>
+          </ul>
+        </div>
+      </AnimatedSection>
+
+      <AnimatedSection animation="slide-in-left" className="order-1 md:order-2">
+        <div className="relative h-[250px] sm:h-[300px] md:h-[400px] rounded-xl overflow-hidden mb-6 md:mb-0">
+          <Image
+            src="/compare-professionals.webp?height=400&width=600"
+            alt="Compare professionals"
+            fill
+            className="object-cover"
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, 50vw"
+          />
+        </div>
+      </AnimatedSection>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 items-center mb-12 sm:mb-16">
+      <AnimatedSection animation="slide-in-left">
+        <div className="relative h-[250px] sm:h-[300px] md:h-[400px] rounded-xl overflow-hidden mb-6 md:mb-0">
+          <Image 
+            src="/hire.webp?height=400&width=600" 
+            alt="Hire and pay" 
+            fill 
+            className="object-cover"
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, 50vw"
+          />
+        </div>
+      </AnimatedSection>
+
+      <AnimatedSection animation="slide-in-right">
+        <div className="space-y-4 sm:space-y-6 relative z-10 text-center md:text-left px-8 sm:px-12 md:px-0">
+          <div className="bg-[#00A6A6] h-10 w-10 sm:h-12 sm:w-12 rounded-full flex items-center justify-center text-white font-bold mx-auto md:mx-0">
+            3
+          </div>
+          <h3 className="text-xl sm:text-2xl font-bold text-[#333333]">Hire & Pay Securely</h3>
+          <p className="text-sm sm:text-base text-[#666666]">
+            Choose the right professional and pay securely through our platform. Your payment is held in escrow
+            until the job is completed to your satisfaction.
+          </p>
+          <ul className="space-y-2 inline-block text-left">
+            <li className="flex items-start gap-2">
+              <CheckCircle className="h-5 w-5 text-[#00A6A6] mt-0.5 flex-shrink-0" />
+              <span className="text-sm sm:text-base text-[#666666]">Secure payment protection</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle className="h-5 w-5 text-[#00A6A6] mt-0.5 flex-shrink-0" />
+              <span className="text-sm sm:text-base text-[#666666]">Only pay when you're satisfied</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle className="h-5 w-5 text-[#00A6A6] mt-0.5 flex-shrink-0" />
+              <span className="text-sm sm:text-base text-[#666666]">Multiple payment options available</span>
+            </li>
+          </ul>
+        </div>
+      </AnimatedSection>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 items-center">
+      <AnimatedSection animation="slide-in-right" className="order-2 md:order-1">
+        <div className="space-y-4 sm:space-y-6 relative z-10 text-center md:text-left px-8 sm:px-12 md:px-0">
+          <div className="bg-[#00A6A6] h-10 w-10 sm:h-12 sm:w-12 rounded-full flex items-center justify-center text-white font-bold mx-auto md:mx-0">
+            4
+          </div>
+          <h3 className="text-xl sm:text-2xl font-bold text-[#333333]">Leave a Review</h3>
+          <p className="text-sm sm:text-base text-[#666666]">
+            After the job is complete, share your experience to help other clients find great professionals.
+            Your feedback helps maintain our high-quality standards.
+          </p>
+          <ul className="space-y-2 inline-block text-left">
+            <li className="flex items-start gap-2">
+              <CheckCircle className="h-5 w-5 text-[#00A6A6] mt-0.5 flex-shrink-0" />
+              <span className="text-sm sm:text-base text-[#666666]">Rate your experience</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle className="h-5 w-5 text-[#00A6A6] mt-0.5 flex-shrink-0" />
+              <span className="text-sm sm:text-base text-[#666666]">Share detailed feedback</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle className="h-5 w-5 text-[#00A6A6] mt-0.5 flex-shrink-0" />
+              <span className="text-sm sm:text-base text-[#666666]">Help other clients make informed decisions</span>
+            </li>
+          </ul>
+        </div>
+      </AnimatedSection>
+
+      <AnimatedSection animation="slide-in-left" className="order-1 md:order-2">
+        <div className="relative h-[250px] sm:h-[300px] md:h-[400px] rounded-xl overflow-hidden mb-6 md:mb-0">
+          <Image
+            src="/review.webp?height=400&width=600"
+            alt="Leave a review"
+            fill
+            className="object-cover"
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, 50vw"
+          />
+        </div>
+      </AnimatedSection>
+    </div>
+
+    <div className="text-center mt-8 sm:mt-12">
+      <Button asChild className="bg-[#00A6A6] hover:bg-[#008f8f] text-white px-4 py-2 text-sm sm:text-base">
+        <Link href="/client-benefits">Learn More About Client Benefits</Link>
+      </Button>
+    </div>
+  </div>
+</section>
 
         {/* For Professionals section - Fix button z-index and add more bottom padding */}
         <section className="py-16 px-4 md:px-6 pb-24 bg-[#E0E0E0]">

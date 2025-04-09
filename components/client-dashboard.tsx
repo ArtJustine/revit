@@ -4,20 +4,7 @@ import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
-import {
-  PlusCircle,
-  Clock,
-  CheckCircle,
-  AlertCircle,
-  User,
-  Settings,
-  LogOut,
-  Briefcase,
-  Calendar,
-  MessageSquare,
-  ChevronRight,
-  Search,
-} from "lucide-react"
+import { PlusCircle, Clock, CheckCircle, AlertCircle, User, Settings, LogOut, Briefcase, Calendar, MessageSquare, ChevronRight, DollarSign, Edit, Search } from 'lucide-react'
 
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -45,7 +32,7 @@ export default function ClientDashboardPage() {
         // Get jobs created by this client
         const jobsData = await getJobsByClient(user.uid)
         console.log("Client jobs:", jobsData)
-
+        
         setMyJobs(jobsData)
       } catch (error) {
         console.error("Error fetching dashboard data:", error)
@@ -215,14 +202,14 @@ export default function ClientDashboardPage() {
                         <span>Calendar</span>
                       </Link>
                       <Link
-                        href="/dashboard/profile"
+                        href="/client/profile"
                         className="flex items-center px-4 py-3 hover:bg-gray-100 text-[#666666] hover:text-[#00A6A6] transition-colors"
                       >
                         <User className="mr-3 h-5 w-5" />
                         <span>My Profile</span>
                       </Link>
                       <Link
-                        href="/dashboard/settings"
+                        href="/client/settings"
                         className="flex items-center px-4 py-3 hover:bg-gray-100 text-[#666666] hover:text-[#00A6A6] transition-colors"
                       >
                         <Settings className="mr-3 h-5 w-5" />
@@ -288,8 +275,7 @@ export default function ClientDashboardPage() {
                       <div className="flex justify-center items-center h-64">
                         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#00A6A6]"></div>
                       </div>
-                    ) : myJobs.filter((job) => job.status !== "completed" && job.status !== "cancelled").length ===
-                      0 ? (
+                    ) : myJobs.filter((job) => job.status !== "completed" && job.status !== "cancelled").length === 0 ? (
                       <Card>
                         <CardContent className="flex flex-col items-center justify-center py-12">
                           <Briefcase className="h-16 w-16 text-gray-300 mb-4" />
