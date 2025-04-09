@@ -83,7 +83,7 @@ export default function WorkerSignupPage() {
     try {
       const result = await signUp(values.email, values.password, values.firstName, values.lastName, "professional", {
         phone: values.phone,
-        profession: values.profession,
+        profession: values.profession, // Capturing the selected profession
         experience: values.experience,
       })
 
@@ -251,11 +251,9 @@ export default function WorkerSignupPage() {
                             ) : (
                               <Eye className="h-4 w-4 text-[#666666]" />
                             )}
-                            <span className="sr-only">{showPassword ? "Hide password" : "Show password"}</span>
                           </Button>
                         </div>
                       </FormControl>
-                      <FormDescription>Password must be at least 8 characters long.</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -282,7 +280,6 @@ export default function WorkerSignupPage() {
                             ) : (
                               <Eye className="h-4 w-4 text-[#666666]" />
                             )}
-                            <span className="sr-only">{showConfirmPassword ? "Hide password" : "Show password"}</span>
                           </Button>
                         </div>
                       </FormControl>
@@ -295,39 +292,34 @@ export default function WorkerSignupPage() {
                   control={form.control}
                   name="terms"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                    <FormItem className="flex items-center space-x-2">
                       <FormControl>
                         <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                       </FormControl>
-                      <div className="space-y-1 leading-none">
-                        <FormLabel>
-                          <span className="text-sm text-[#666666]">
-                            I agree to the{" "}
-                            <Link
-                              href="/terms"
-                              className="text-[#00A6A6] hover:underline"
-                            >
-                              terms and conditions
-                            </Link>
-                          </span>
-                        </FormLabel>
-                      </div>
+                      <FormLabel>
+                        I agree to the <Link href="/terms" className="text-[#00A6A6]">terms and conditions</Link>
+                      </FormLabel>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
 
-                <div className="space-y-6">
-                  {submitError && <p className="text-red-500 text-center">{submitError}</p>}
-                  {submitSuccess && <p className="text-green-500 text-center">Signup successful! Redirecting...</p>}
+                <div className="mt-6">
                   <Button
                     type="submit"
-                    fullWidth
                     disabled={isSubmitting}
-                    className="bg-[#00A6A6] text-white hover:bg-[#008e8e]"
+                    className="w-full bg-[#00A6A6] text-white transition-all duration-300 transform hover:scale-105 hover:bg-[#00A6A6CC]"
                   >
-                    {isSubmitting ? "Submitting..." : "Create Account"}
+                    {isSubmitting ? "Signing Up..." : "Sign Up"}
                   </Button>
                 </div>
+
+                {submitSuccess && (
+                  <div className="mt-4 text-center text-green-500">Signup Successful! Redirecting...</div>
+                )}
+                {submitError && (
+                  <div className="mt-4 text-center text-red-500">{submitError}</div>
+                )}
               </form>
             </Form>
           </div>

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
@@ -36,28 +36,72 @@ export default function DashboardPage() {
   const [jobs, setJobs] = useState<Job[]>([])
   const [featuredProfessionals, setFeaturedProfessionals] = useState<UserProfile[]>([])
   const [loading, setLoading] = useState(true)
+  const [activeTab, setActiveTab] = useState("all")
 
-  useEffect(() => {
-    async function fetchData() {
-      if (user) {
-        try {
-          setLoading(true)
-          const [jobsData, professionalsData] = await Promise.all([
-            getJobsByClient(user.uid),
-            getFeaturedProfessionals(4),
-          ])
-          setJobs(jobsData as Job[])
-          setFeaturedProfessionals(professionalsData)
-        } catch (error) {
-          console.error("Error fetching dashboard data:", error)
-        } finally {
-          setLoading(false)
+  // Modify the fetchData function to ensure we're getting the latest data
+  const fetchData = useCallback(async () => {
+    if (user) {
+      try {
+        setLoading(true)
+        console.log("Fetching client dashboard data...")
+
+        // Force cache refresh by adding a timestamp parameter
+        const timestamp = new Date().getTime()
+        const [jobsData, professionalsData] = await Promise.all([
+          getJobsByClient(user.uid, timestamp),
+          getFeaturedProfessionals(4),
+        ])
+
+        console.log("Client jobs raw data:", jobsData)
+
+        // Ensure we have valid job data
+        if (Array.isArray(jobsData)) {
+          setJobs(jobsData)
+        } else {
+          console.error("Invalid jobs data format:", jobsData)
+          setJobs([])
         }
+
+        setFeaturedProfessionals(professionalsData)
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error)
+      } finally {
+        setLoading(false)
       }
     }
-
-    fetchData()
   }, [user])
+
+  // Fetch data on initial load
+  useEffect(() => {
+    fetchData()
+
+    // Set up an interval to refresh data every 30 seconds
+    const intervalId = setInterval(() => {
+      fetchData()
+    }, 30000)
+
+    // Clean up interval on unmount
+    return () => clearInterval(intervalId)
+  }, [fetchData])
+
+  // Add this console log to debug the jobs data and filtering
+  useEffect(() => {
+    if (jobs.length > 0) {
+      console.log("All jobs:", jobs)
+      console.log(
+        "Active jobs:",
+        jobs.filter((job) => job.status !== "completed" && job.status !== "cancelled"),
+      )
+      console.log("Active tab value:", activeTab)
+    }
+  }, [jobs, activeTab])
+
+  // Handle tab change
+  const handleTabChange = (value: string) => {
+    setActiveTab(value)
+    // Refresh data when switching tabs
+    fetchData()
+  }
 
   const handleSignOut = async () => {
     try {
@@ -246,7 +290,7 @@ export default function DashboardPage() {
 
               {/* Main content */}
               <motion.div initial="hidden" animate="visible" variants={fadeIn} className="lg:col-span-3">
-                <Tabs defaultValue="all" className="w-full">
+                <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
                   <TabsList className="mb-6">
                     <TabsTrigger value="all">All Jobs</TabsTrigger>
                     <TabsTrigger value="active">Active</TabsTrigger>
@@ -254,6 +298,12 @@ export default function DashboardPage() {
                   </TabsList>
 
                   <TabsContent value="all">
+                    <div className="mb-4">
+                      <Button onClick={fetchData} variant="outline" className="border-[#00A6A6] text-[#00A6A6]">
+                        <Search className="mr-2 h-4 w-4" /> Refresh Jobs
+                      </Button>
+                    </div>
+
                     {loading ? (
                       <div className="flex justify-center items-center h-64">
                         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#00A6A6]"></div>
@@ -536,4 +586,3 @@ export default function DashboardPage() {
     </ProtectedRoute>
   )
 }
-

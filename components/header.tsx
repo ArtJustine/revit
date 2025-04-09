@@ -165,13 +165,6 @@ export function Header() {
             </div>
             <nav className="flex flex-col gap-6 mt-8">
               <Link
-                href="/"
-                className="text-lg font-medium text-[#333333] hover:text-[#00A6A6] transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Home
-              </Link>
-              <Link
                 href="/how-it-works"
                 className="text-lg font-medium text-[#333333] hover:text-[#00A6A6] transition-colors"
                 onClick={() => setIsMenuOpen(false)}

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
@@ -36,29 +36,51 @@ export default function ProfessionalDashboardPage() {
   const [myJobs, setMyJobs] = useState<Job[]>([])
   const [availableJobs, setAvailableJobs] = useState<Job[]>([])
   const [loading, setLoading] = useState(true)
-  
+  const [activeTab, setActiveTab] = useState("my-jobs")
 
-  useEffect(() => {
-    async function fetchData() {
-      if (user) {
-        try {
-          setLoading(true)
-          const [myJobsData, availableJobsData] = await Promise.all([
-            getJobsByProfessional(user.uid),
-            getAvailableJobs(),
-          ])
-          setMyJobs(myJobsData as Job[])
-          setAvailableJobs(availableJobsData as Job[])
-        } catch (error) {
-          console.error("Error fetching dashboard data:", error)
-        } finally {
-          setLoading(false)
-        }
+  // Create a fetchData function that can be reused
+  const fetchData = useCallback(async () => {
+    if (user) {
+      try {
+        setLoading(true)
+        console.log("Fetching professional dashboard data...")
+
+        const [myJobsData, availableJobsData] = await Promise.all([getJobsByProfessional(user.uid), getAvailableJobs()])
+
+        console.log("My jobs:", myJobsData)
+        console.log("Available jobs:", availableJobsData)
+
+        setMyJobs(myJobsData as Job[])
+        setAvailableJobs(availableJobsData as Job[])
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error)
+      } finally {
+        setLoading(false)
       }
     }
-
-    fetchData()
   }, [user])
+
+  // Fetch data on initial load
+  useEffect(() => {
+    fetchData()
+
+    // Set up an interval to refresh data every 30 seconds
+    const intervalId = setInterval(() => {
+      fetchData()
+    }, 30000)
+
+    // Clean up interval on unmount
+    return () => clearInterval(intervalId)
+  }, [fetchData])
+
+  // Handle tab change
+  const handleTabChange = (value: string) => {
+    setActiveTab(value)
+    // Refresh data when switching to available tab
+    if (value === "available") {
+      fetchData()
+    }
+  }
 
   const handleSignOut = async () => {
     try {
@@ -142,7 +164,6 @@ export default function ProfessionalDashboardPage() {
   }
 
   // Filter available jobs that match the professional's category
-  // Fixed: Convert both to lowercase for case-insensitive comparison
   const matchingJobs = availableJobs.filter((job) => {
     // If userData.profession is undefined, show all jobs
     if (!userData?.profession) return true
@@ -271,7 +292,7 @@ export default function ProfessionalDashboardPage() {
 
               {/* Main content */}
               <motion.div initial="hidden" animate="visible" variants={fadeIn} className="lg:col-span-3">
-                <Tabs defaultValue="my-jobs" className="w-full">
+                <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
                   <TabsList className="mb-6">
                     <TabsTrigger value="my-jobs">My Jobs</TabsTrigger>
                     <TabsTrigger value="available">Available Jobs</TabsTrigger>
@@ -292,8 +313,11 @@ export default function ProfessionalDashboardPage() {
                             You don't have any active jobs at the moment. Browse available jobs to find new
                             opportunities.
                           </p>
-                          <Button asChild className="bg-[#00A6A6] hover:bg-[#008f8f] text-white">
-                            <Link href="#available">Browse Available Jobs</Link>
+                          <Button
+                            onClick={() => handleTabChange("available")}
+                            className="bg-[#00A6A6] hover:bg-[#008f8f] text-white"
+                          >
+                            Browse Available Jobs
                           </Button>
                         </CardContent>
                       </Card>
@@ -354,18 +378,23 @@ export default function ProfessionalDashboardPage() {
                   </TabsContent>
 
                   <TabsContent value="available">
+                    <div className="mb-4">
+                      <Button onClick={fetchData} variant="outline" className="border-[#00A6A6] text-[#00A6A6]">
+                        <Search className="mr-2 h-4 w-4" /> Refresh Available Jobs
+                      </Button>
+                    </div>
+
                     {loading ? (
                       <div className="flex justify-center items-center h-64">
                         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#00A6A6]"></div>
                       </div>
-                    ) : matchingJobs.length === 0 ? (
+                    ) : availableJobs.length === 0 ? (
                       <Card>
                         <CardContent className="flex flex-col items-center justify-center py-12">
                           <Search className="h-16 w-16 text-gray-300 mb-4" />
                           <h3 className="text-xl font-bold text-[#333333] mb-2">No Available Jobs</h3>
                           <p className="text-[#666666] text-center mb-6">
-                            There are no available jobs matching your skills at the moment. Check back later for new
-                            opportunities.
+                            There are no available jobs at the moment. Check back later for new opportunities.
                           </p>
                           {userData?.profession && (
                             <p className="text-[#666666] text-center">
@@ -450,8 +479,11 @@ export default function ProfessionalDashboardPage() {
                           <CheckCircle className="h-16 w-16 text-gray-300 mb-4" />
                           <h3 className="text-xl font-bold text-[#333333] mb-2">No Completed Jobs</h3>
                           <p className="text-[#666666] text-center mb-6">You don't have any completed jobs yet.</p>
-                          <Button asChild className="bg-[#00A6A6] hover:bg-[#008f8f] text-white">
-                            <Link href="#available">Browse Available Jobs</Link>
+                          <Button
+                            onClick={() => handleTabChange("available")}
+                            className="bg-[#00A6A6] hover:bg-[#008f8f] text-white"
+                          >
+                            Browse Available Jobs
                           </Button>
                         </CardContent>
                       </Card>
@@ -569,4 +601,3 @@ export default function ProfessionalDashboardPage() {
     </ProtectedRoute>
   )
 }
-

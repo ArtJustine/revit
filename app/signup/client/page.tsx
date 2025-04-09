@@ -9,7 +9,15 @@ import { z } from "zod"
 import { ArrowLeft, Eye, EyeOff } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Header } from "@/components/header"
@@ -18,21 +26,11 @@ import { useAuth } from "@/lib/firebase/auth-context"
 
 const formSchema = z
   .object({
-    firstName: z.string().min(2, {
-      message: "First name must be at least 2 characters.",
-    }),
-    lastName: z.string().min(2, {
-      message: "Last name must be at least 2 characters.",
-    }),
-    email: z.string().email({
-      message: "Please enter a valid email address.",
-    }),
-    password: z.string().min(8, {
-      message: "Password must be at least 8 characters.",
-    }),
-    confirmPassword: z.string().min(8, {
-      message: "Password must be at least 8 characters.",
-    }),
+    firstName: z.string().min(2, { message: "First name must be at least 2 characters." }),
+    lastName: z.string().min(2, { message: "Last name must be at least 2 characters." }),
+    email: z.string().email({ message: "Please enter a valid email address." }),
+    password: z.string().min(8, { message: "Password must be at least 8 characters." }),
+    confirmPassword: z.string().min(8, { message: "Password must be at least 8 characters." }),
     terms: z.boolean().refine((val) => val === true, {
       message: "You must agree to the terms and conditions.",
     }),
@@ -64,34 +62,27 @@ export default function ClientSignupPage() {
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Show loading state
     setIsSubmitting(true)
     setSubmitError("")
-
     try {
-      // Sign up with Firebase
-      const result = await signUp(values.email, values.password, values.firstName, values.lastName, "client")
-
+      const result = await signUp(values.email, values.password, values.firstName, values.lastName, "client") // Added "client" as a user role
       console.log("Client signup result:", result)
-
-      // IMPORTANT: Reset submitting state BEFORE showing success
+      setSubmitSuccess(true)
       setIsSubmitting(false)
 
-      // Show success message
-      setSubmitSuccess(true)
-
-      // Log the success state to verify it's set correctly
-      console.log("Submit success state set to:", true)
-
-      // Redirect to dashboard after a short delay to ensure the success message is shown
       setTimeout(() => {
-        console.log("Redirecting to dashboard...")
         router.push("/dashboard")
       }, 2000)
     } catch (error: any) {
       console.error("Signup error:", error)
-      setSubmitError(error.message || "An error occurred during signup. Please try again.")
-      setIsSubmitting(false) // Reset submitting state on error
+      setSubmitError(
+        error?.code === "auth/email-already-in-use"
+          ? "This email is already in use."
+          : error?.code === "auth/invalid-email"
+          ? "Invalid email address."
+          : error?.message || "Something went wrong. Please try again."
+      )
+      setIsSubmitting(false)
     }
   }
 
@@ -115,6 +106,7 @@ export default function ClientSignupPage() {
 
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                {/* First & Last Name */}
                 <div className="grid grid-cols-2 gap-4">
                   <FormField
                     control={form.control}
@@ -129,7 +121,6 @@ export default function ClientSignupPage() {
                       </FormItem>
                     )}
                   />
-
                   <FormField
                     control={form.control}
                     name="lastName"
@@ -145,6 +136,7 @@ export default function ClientSignupPage() {
                   />
                 </div>
 
+                {/* Email */}
                 <FormField
                   control={form.control}
                   name="email"
@@ -159,6 +151,7 @@ export default function ClientSignupPage() {
                   )}
                 />
 
+                {/* Password */}
                 <FormField
                   control={form.control}
                   name="password"
@@ -167,7 +160,7 @@ export default function ClientSignupPage() {
                       <FormLabel>Password</FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <Input type={showPassword ? "text" : "password"} placeholder="••••••••" {...field} />
+                          <Input type={showPassword ? "text" : "password"} {...field} placeholder="••••••••" />
                           <Button
                             type="button"
                             variant="ghost"
@@ -180,7 +173,6 @@ export default function ClientSignupPage() {
                             ) : (
                               <Eye className="h-4 w-4 text-[#666666]" />
                             )}
-                            <span className="sr-only">{showPassword ? "Hide password" : "Show password"}</span>
                           </Button>
                         </div>
                       </FormControl>
@@ -190,6 +182,7 @@ export default function ClientSignupPage() {
                   )}
                 />
 
+                {/* Confirm Password */}
                 <FormField
                   control={form.control}
                   name="confirmPassword"
@@ -198,7 +191,7 @@ export default function ClientSignupPage() {
                       <FormLabel>Confirm Password</FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <Input type={showConfirmPassword ? "text" : "password"} placeholder="••••••••" {...field} />
+                          <Input type={showConfirmPassword ? "text" : "password"} {...field} placeholder="••••••••" />
                           <Button
                             type="button"
                             variant="ghost"
@@ -211,7 +204,6 @@ export default function ClientSignupPage() {
                             ) : (
                               <Eye className="h-4 w-4 text-[#666666]" />
                             )}
-                            <span className="sr-only">{showConfirmPassword ? "Hide password" : "Show password"}</span>
                           </Button>
                         </div>
                       </FormControl>
@@ -220,6 +212,7 @@ export default function ClientSignupPage() {
                   )}
                 />
 
+                {/* Terms */}
                 <FormField
                   control={form.control}
                   name="terms"
@@ -245,6 +238,7 @@ export default function ClientSignupPage() {
                   )}
                 />
 
+                {/* Submit */}
                 <Button
                   type="submit"
                   className="w-full bg-[#00A6A6] hover:bg-[#008f8f] text-white"
@@ -255,6 +249,7 @@ export default function ClientSignupPage() {
               </form>
             </Form>
 
+            {/* Success */}
             {submitSuccess && (
               <div className="mt-4 p-4 bg-green-50 border border-green-200 text-green-700 rounded-md flex items-center">
                 <div className="mr-3">
@@ -275,7 +270,12 @@ export default function ClientSignupPage() {
               </div>
             )}
 
-            {submitError && <div className="mt-4 p-4 bg-red-50 text-red-700 rounded-md">Error: {submitError}</div>}
+            {/* Error */}
+            {submitError && (
+              <div className="mt-4 p-4 bg-red-50 border border-red-200 text-red-700 rounded-md">
+                Error: {submitError}
+              </div>
+            )}
 
             <div className="text-center mt-6">
               <p className="text-[#666666] text-sm">
@@ -292,4 +292,3 @@ export default function ClientSignupPage() {
     </div>
   )
 }
-
