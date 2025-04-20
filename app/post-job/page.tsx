@@ -213,7 +213,7 @@ export default function PostJobPage() {
                             <FormItem>
                               <FormLabel>Location</FormLabel>
                               <FormControl>
-                                <Input placeholder="e.g., New York, NY" {...field} />
+                                <Input placeholder="e.g., Mabalacat City" {...field} />
                               </FormControl>
                               <FormDescription>Where the job needs to be done.</FormDescription>
                               <FormMessage />
