@@ -125,7 +125,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         firstName,
         lastName,
         displayName: `${firstName} ${lastName}`,
-        userType,
+        userType, // This is the key field for determining user type
         createdAt: new Date(), // This will be properly converted to Firestore timestamp
         ...(additionalData || {}),
       }
@@ -135,6 +135,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // Ensure we wait for the Firestore document to be created
         await setDoc(doc(db, "users", user.uid), userData)
         console.log(`${userType} user document created in Firestore`)
+        console.log(`User registered as ${userType} with data:`, userData)
       } catch (firestoreError) {
         console.error("Error creating Firestore document:", firestoreError)
         firestoreSuccess = false
@@ -161,7 +162,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signIn = async (email: string, password: string) => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password)
-      return userCredential.user as User
+      const user = userCredential.user as User
+
+      // Fetch user data from Firestore to get the user type
+      const userDoc = await getDoc(doc(db, "users", user.uid))
+      if (userDoc.exists()) {
+        const userData = userDoc.data()
+        // Add userType to the user object
+        user.userType = userData.userType
+        user.additionalData = userData
+      }
+
+      return user
     } catch (error) {
       console.error("Error signing in:", error)
       throw error
@@ -203,4 +215,3 @@ export function useAuth() {
   const context = useContext(AuthContext)
   return context
 }
-
