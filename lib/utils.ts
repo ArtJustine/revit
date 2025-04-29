@@ -12,7 +12,7 @@ import {
   orderBy,
   serverTimestamp,
 } from "firebase/firestore"
-import { db } from "./config"
+import { db } from "./firebase/config"
 
 // Add the cn utility function
 export function cn(...inputs: ClassValue[]) {

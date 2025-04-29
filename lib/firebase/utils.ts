@@ -11,7 +11,9 @@ import {
   updateDoc,
   orderBy,
   serverTimestamp,
+  setDoc,
 } from "firebase/firestore"
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"
 import { db } from "./config"
 
 // Add the cn utility function
@@ -46,6 +48,26 @@ export interface Application {
   message: string
   status: string
   createdAt: any
+  updatedAt?: any
+}
+
+export interface UserProfile {
+  id: string
+  firstName?: string
+  lastName?: string
+  displayName?: string
+  email?: string
+  phone?: string
+  address?: string
+  city?: string
+  state?: string
+  zipCode?: string
+  bio?: string
+  profileImage?: string
+  userType?: "client" | "professional"
+  profession?: string
+  experience?: string
+  createdAt?: any
   updatedAt?: any
 }
 
@@ -311,6 +333,97 @@ export async function getUserTypeById(userId: string): Promise<string | null> {
     return userData.userType || null
   } catch (error) {
     console.error("Error getting user type:", error)
+    throw error
+  }
+}
+
+/**
+ * Retrieves a user's profile from Firestore
+ * @param userId The ID of the user
+ * @returns The user profile data or null if not found
+ */
+export async function getUserProfile(userId: string): Promise<UserProfile | null> {
+  try {
+    console.log(`Fetching profile for user ID: ${userId}`)
+    
+    const userDoc = await getDoc(doc(db, "users", userId))
+    
+    if (!userDoc.exists()) {
+      console.log(`No profile found for user ID: ${userId}`)
+      return null
+    }
+    
+    const userData = userDoc.data()
+    console.log(`Profile data retrieved for user ID: ${userId}`)
+    
+    return { 
+      id: userDoc.id,
+      ...userData 
+    } as UserProfile
+  } catch (error) {
+    console.error("Error getting user profile:", error)
+    throw error
+  }
+}
+
+/**
+ * Updates a user's profile in Firestore
+ * @param userId The ID of the user
+ * @param profileData The updated profile data
+ */
+export async function updateUserProfile(
+  userId: string, 
+  profileData: Partial<Omit<UserProfile, "id" | "createdAt">>
+): Promise<void> {
+  try {
+    console.log(`Updating profile for user ID: ${userId}`)
+    
+    const userRef = doc(db, "users", userId)
+    const userDoc = await getDoc(userRef)
+    
+    const updateData = {
+      ...profileData,
+      updatedAt: serverTimestamp(),
+    }
+    
+    if (!userDoc.exists()) {
+      // If the user document doesn't exist yet, create it
+      console.log(`Creating new profile for user ID: ${userId}`)
+      await setDoc(userRef, {
+        ...updateData,
+        createdAt: serverTimestamp(),
+      })
+    } else {
+      // Otherwise update the existing document
+      console.log(`Updating existing profile for user ID: ${userId}`)
+      await updateDoc(userRef, updateData)
+    }
+    
+    console.log(`Profile successfully updated for user ID: ${userId}`)
+  } catch (error) {
+    console.error("Error updating user profile:", error)
+    throw error
+  }
+}
+
+/**
+ * Uploads a profile image to Firebase Storage and returns the download URL
+ * @param userId The ID of the user
+ * @param file The image file to upload
+ * @returns The download URL of the uploaded image
+ */
+export async function uploadProfileImage(userId: string, file: File): Promise<string> {
+  try {
+    const storage = getStorage()
+    const storageRef = ref(storage, `profile-images/${userId}/${file.name}`)
+    
+    const snapshot = await uploadBytes(storageRef, file)
+    const downloadURL = await getDownloadURL(snapshot.ref)
+    
+    console.log(`Profile image uploaded for user ID: ${userId}`)
+    return downloadURL
+  } catch (error) {
+    console.error("Error uploading profile image:", error)
     throw error
   }
 }

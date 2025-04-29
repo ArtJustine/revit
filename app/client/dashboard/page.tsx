@@ -20,6 +20,7 @@ import {
 } from "lucide-react"
 
 import { Header } from "@/components/header"
+import { Sidebar } from "@/components/sidebar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -205,81 +206,16 @@ export default function ClientDashboardPage() {
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
               {/* Sidebar */}
               <motion.div initial="hidden" animate="visible" variants={fadeIn} className="lg:col-span-1">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Dashboard</CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-0">
-                    <nav className="space-y-1">
-                      <Link
-                        href="/client/dashboard"
-                        className="flex items-center px-4 py-3 bg-[#00A6A6]/10 text-[#00A6A6] font-medium"
-                      >
-                        <Briefcase className="mr-3 h-5 w-5" />
-                        <span>My Jobs</span>
-                      </Link>
-                      <Link
-                        href="/client/messages"
-                        className="flex items-center px-4 py-3 hover:bg-gray-100 text-[#666666] hover:text-[#00A6A6] transition-colors"
-                      >
-                        <MessageSquare className="mr-3 h-5 w-5" />
-                        <span>Messages</span>
-                      </Link>
-                      <Link
-                        href="/client/calendar"
-                        className="flex items-center px-4 py-3 hover:bg-gray-100 text-[#666666] hover:text-[#00A6A6] transition-colors"
-                      >
-                        <Calendar className="mr-3 h-5 w-5" />
-                        <span>Calendar</span>
-                      </Link>
-                      <Link
-                        href="/client/profile"
-                        className="flex items-center px-4 py-3 hover:bg-gray-100 text-[#666666] hover:text-[#00A6A6] transition-colors"
-                      >
-                        <User className="mr-3 h-5 w-5" />
-                        <span>My Profile</span>
-                      </Link>
-                      <Link
-                        href="/client/settings"
-                        className="flex items-center px-4 py-3 hover:bg-gray-100 text-[#666666] hover:text-[#00A6A6] transition-colors"
-                      >
-                        <Settings className="mr-3 h-5 w-5" />
-                        <span>Settings</span>
-                      </Link>
-                    </nav>
-                  </CardContent>
-                </Card>
-
-                <Card className="mt-6">
-                  <CardHeader>
-                    <CardTitle>Quick Stats</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <span className="text-[#666666]">Active Jobs</span>
-                      <span className="font-bold text-[#333333]">
-                        {myJobs.filter((job) => job.status !== "completed" && job.status !== "cancelled").length}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-[#666666]">Completed Jobs</span>
-                      <span className="font-bold text-[#333333]">
-                        {myJobs.filter((job) => job.status === "completed").length}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-[#666666]">Total Spent</span>
-                      <span className="font-bold text-[#333333]">${calculateTotalSpent().toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-[#666666]">Open Jobs</span>
-                      <span className="font-bold text-[#333333]">
-                        {myJobs.filter((job) => job.status === "open").length}
-                      </span>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
+  <Sidebar
+    userType="client"
+    stats={{
+      activeJobs: myJobs.filter((job) => job.status !== "completed" && job.status !== "cancelled").length,
+      completedJobs: myJobs.filter((job) => job.status === "completed").length,
+      totalSpent: calculateTotalSpent(),
+      openJobs: myJobs.filter((job) => job.status === "open").length,
+    }}
+  />
+</motion.div>
 
               {/* Main content */}
               <motion.div initial="hidden" animate="visible" variants={fadeIn} className="lg:col-span-3">
