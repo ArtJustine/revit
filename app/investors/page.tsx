@@ -29,7 +29,7 @@ export default function InvestorsPage() {
               </div>
               <div className="relative h-[300px] rounded-xl overflow-hidden">
                 <Image
-                  src="/placeholder.svg?height=300&width=500"
+                  src="/service-marketplace.jpg?height=300&width=500"
                   alt="Investment growth chart"
                   fill
                   className="object-cover"
